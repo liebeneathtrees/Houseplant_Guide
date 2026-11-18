@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Houseplant Guide</title>
+<meta name="description" content="Sourced care for houseplants: light, water, soil, humidity, pet safety and propagation, with a plant finder.">
+<meta name="theme-color" content="#34502f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%AA%B4%3C/text%3E%3C/svg%3E">
+<script data-file="js/theme-early.js">
+// Color theme first, so the page never flashes the wrong colors. Auto follows the device.
+var HG_THEME_KEY = 'hg.theme.v1';
+function hgThemeApply() {
+  var pref = 'auto';
+  try { pref = localStorage.getItem(HG_THEME_KEY) || 'auto'; } catch (e) { /* ignore */ }
+  var dark = pref === 'dark' || (pref === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+}
+hgThemeApply();
+</script>
+<style data-file="css/app.css">
+/* ═══ Houseplant Guide: botanical print palette (light); dark values below ═══ */
+:root{
+  --paper:#f5efe0;--paper2:#ece4cf;--card:#fffcf3;--ink:#26261d;--ink2:#46443a;--ink3:#5f5b4c;
+  --sage:#4f6b4a;--sage-dk:#34502f;--sage-mid:#7d9a72;--sage-pale:#e4ead6;--moss:#6f7f3b;
+  --rust:#8f4a22;--rust-pale:#f6e3d4;--ok:#2f6a3a;--ok-pale:#dfeedd;--warn:#80590b;--warn-pale:#f5ead0;
+  --border:#d6ccb2;--border2:#c4b896;--shadow:0 1px 3px rgba(60,50,20,.08),0 4px 14px rgba(60,50,20,.06);
+  --r:12px;--head-h:64px;
+  --f-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;--f-head:'Fraunces',Georgia,serif;
+  color-scheme:light;
+}
+html[data-theme="dark"]{
+  --paper:#1a1c17;--paper2:#22251e;--card:#252920;--ink:#ece6d3;--ink2:#cfc8b3;--ink3:#aaa38d;
+  --sage:#9fbf92;--sage-dk:#c4dab8;--sage-mid:#7f9c74;--sage-pale:#2d3628;--moss:#b4c27a;
+  --rust:#eaa577;--rust-pale:#3d2a1e;--ok:#8fd19a;--ok-pale:#20352a;--warn:#e6c372;--warn-pale:#3a3120;
+  --border:#3a3f33;--border2:#4b5242;--shadow:0 1px 3px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
+a{color:var(--sage-dk)}
+h1,h2,h3,h4{font-family:var(--f-head);color:var(--ink);line-height:1.2;margin:0 0 .5em;font-weight:600}
+h1{font-size:clamp(1.7rem,4vw,2.4rem)}h2{font-size:1.45rem}h3{font-size:1.15rem}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sage-mid);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* header */
+#hg-head{position:sticky;top:0;z-index:50;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+.hg-head-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:0 16px;height:var(--head-h)}
+.hg-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);flex-shrink:0;cursor:pointer;background:none;border:0;padding:0}
+.hg-brand svg{width:38px;height:38px}
+.hg-brand b{font-family:var(--f-head);font-size:1.3rem;font-weight:700;letter-spacing:-.01em;display:block;line-height:1.1}
+.hg-brand small{display:block;font-size:.72rem;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase}
+.hg-tabs{display:flex;gap:2px;margin-left:auto}
+.hg-tab{background:none;border:0;padding:9px 13px;border-radius:9px;cursor:pointer;font-weight:500;color:var(--ink2);font-size:.95rem}
+.hg-tab:hover{background:var(--sage-pale);color:var(--ink)}
+.hg-tab.on{background:var(--sage-pale);color:var(--sage-dk);font-weight:600}
+.hg-acts{display:flex;gap:6px}
+.hg-ibtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--paper);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.hg-ibtn:hover{border-color:var(--sage-mid)}
+
+/* bottom bar + More sheet (phones) */
+#hg-bottom{display:none}
+.hg-sheet-wrap{position:fixed;inset:0;background:rgba(20,18,10,.45);z-index:80;display:none;align-items:flex-end}
+.hg-sheet-wrap.open{display:flex}
+.hg-sheet{background:var(--card);width:100%;border-radius:18px 18px 0 0;padding:10px 12px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -6px 30px rgba(0,0,0,.25)}
+.hg-sheet-grab{width:42px;height:5px;border-radius:3px;background:var(--border2);margin:2px auto 10px}
+.hg-sheet button{display:flex;align-items:center;gap:12px;width:100%;padding:13px 10px;border:0;background:none;border-radius:10px;font-size:1rem;text-align:left;cursor:pointer}
+.hg-sheet button:hover{background:var(--sage-pale)}
+@media (max-width:820px){
+  .hg-tabs{display:none}.hg-acts{margin-left:auto}
+  #hg-bottom{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--card);border-top:1px solid var(--border);padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
+  #hg-bottom button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 2px;font-size:.72rem;color:var(--ink2);border-radius:10px;cursor:pointer}
+  #hg-bottom button span{font-size:1.25rem;line-height:1.2}
+  #hg-bottom button.on{color:var(--sage-dk);background:var(--sage-pale);font-weight:600}
+  main{padding-bottom:84px}
+  .hg-brand small{display:none}
+}
+
+/* layout */
+main{max-width:1180px;margin:0 auto;padding:22px 16px 60px}
+.view{animation:hgIn .18s ease}
+@keyframes hgIn{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.view{animation:none}}
+.hg-lead{font-size:1.05rem;color:var(--ink2);max-width:68ch}
+.hg-note{font-size:.85rem;color:var(--ink3)}
+.hg-sec{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;margin:0 0 16px;box-shadow:var(--shadow)}
+.hg-sec>h2:first-child,.hg-sec>h3:first-child{margin-top:0}
+.hg-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;border:1px solid var(--border2);background:var(--card);cursor:pointer;font-weight:600;font-size:.95rem;text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:var(--sage)}
+.btn-primary{background:var(--sage-dk);border-color:var(--sage-dk);color:#fff}
+html[data-theme="dark"] .btn-primary{color:#17200f}
+.btn-primary:hover{filter:brightness(1.08)}
+.hg-quick{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+
+/* home hero: botanical print band */
+.hg-hero{position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--border2);background:var(--paper2);padding:34px 28px 30px;margin-bottom:20px}
+.hg-hero::before{content:"";position:absolute;inset:10px;border:1px solid var(--border2);border-radius:10px;pointer-events:none}
+.hg-hero svg.hg-sprig{position:absolute;right:-10px;bottom:-14px;width:min(340px,48%);height:auto;opacity:.9;pointer-events:none}
+.hg-hero h1{position:relative;max-width:16ch}
+.hg-hero p{position:relative;max-width:52ch}
+.hg-hero .hg-eyebrow{position:relative;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sage-dk);font-weight:600;margin-bottom:8px}
+@media (max-width:640px){.hg-hero{padding:24px 18px 120px}.hg-hero svg.hg-sprig{width:200px;opacity:.75}}
+
+/* group cards */
+.hg-groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.hg-group{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);cursor:pointer;text-align:left;box-shadow:var(--shadow)}
+.hg-group:hover{border-color:var(--sage-mid)}
+.hg-group span{font-size:1.6rem}
+.hg-group b{display:block}
+.hg-group small{color:var(--ink3)}
+
+/* plant cards */
+.hg-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.hg-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;text-align:left;padding:0;box-shadow:var(--shadow)}
+.hg-card:hover{border-color:var(--sage-mid);transform:translateY(-1px)}
+.hg-card .hg-ph{aspect-ratio:4/3}
+.hg-card-b{padding:11px 13px 13px;display:flex;flex-direction:column;gap:4px;flex:1}
+.hg-card-b b{font-family:var(--f-head);font-size:1.08rem;font-weight:600}
+.hg-card-b i{color:var(--ink3);font-size:.86rem}
+.hg-card-ic{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+
+/* photos */
+.hg-ph{position:relative;background:var(--sage-pale);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hg-ph::after{content:"🌿";font-size:2.2rem;opacity:.45}
+.hg-ph.has::after{display:none}
+.hg-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.hg-credit{position:absolute;left:0;right:0;bottom:0;font-size:.66rem;line-height:1.3;padding:3px 6px;background:rgba(18,20,12,.72);color:#f4f0e2;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hg-credit:hover{white-space:normal}
+
+/* chips and badges */
+.chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:.78rem;font-weight:600;border:1px solid transparent;white-space:nowrap}
+.chip-ok{background:var(--ok-pale);color:var(--ok)}
+.chip-bad{background:var(--rust-pale);color:var(--rust)}
+.chip-warn{background:var(--warn-pale);color:var(--warn)}
+.chip-n{background:var(--paper2);color:var(--ink2);border-color:var(--border)}
+.conf{font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:1px 7px;border-radius:6px;vertical-align:middle}
+.conf-verified{background:var(--ok-pale);color:var(--ok)}
+.conf-cited{background:var(--warn-pale);color:var(--warn)}
+.conf-approx{background:var(--paper2);color:var(--ink3);border:1px solid var(--border)}
+.fchips{display:flex;flex-wrap:wrap;gap:6px}
+.fchip{border:1px solid var(--border2);background:var(--card);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:.88rem;color:var(--ink2)}
+.fchip.on{background:var(--sage-dk);border-color:var(--sage-dk);color:#fff;font-weight:600}
+html[data-theme="dark"] .fchip.on{color:#17200f}
+
+/* browse filters */
+.hg-filters{display:grid;gap:12px;margin-bottom:16px}
+.hg-f{display:flex;flex-direction:column;gap:6px}
+.hg-f>span{font-size:.8rem;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em}
+.hg-search{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border2);background:var(--card);color:var(--ink);font-size:1rem}
+.hg-search::placeholder{color:var(--ink3)}
+.hg-count{font-size:.9rem;color:var(--ink3);margin:4px 0 12px}
+.hg-empty{padding:30px;text-align:center;color:var(--ink3);border:1px dashed var(--border2);border-radius:var(--r)}
+
+/* plant page */
+.hg-back{background:none;border:0;color:var(--sage-dk);cursor:pointer;padding:4px 0;margin-bottom:10px;font-weight:600}
+.hg-plant-top{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:22px;align-items:start;margin-bottom:18px}
+@media (max-width:760px){.hg-plant-top{grid-template-columns:1fr}}
+.hg-plant-top .hg-ph{aspect-ratio:4/3;border-radius:var(--r);border:1px solid var(--border)}
+.hg-plant-top h1{margin-bottom:2px}
+.hg-sci{font-style:italic;color:var(--ink2);font-size:1.05rem;margin:0}
+.hg-fam{color:var(--ink3);font-size:.9rem;margin:2px 0 10px}
+.hg-aka{color:var(--ink2);font-size:.92rem;margin:6px 0}
+.hg-badges{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.hg-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.hg-facts div{background:var(--paper2);border-radius:9px;padding:8px 10px;font-size:.88rem}
+.hg-facts b{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3)}
+
+/* range bars */
+.hg-bars{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.hg-bar h4{font-family:var(--f-body);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);margin:0 0 6px;font-weight:700}
+.hg-scale{display:flex;gap:3px}
+.hg-scale div{flex:1;height:30px;border-radius:6px;background:var(--paper2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--ink3);text-align:center;line-height:1.1;padding:0 2px}
+.hg-scale div.ok{background:var(--sage-pale);color:var(--sage-dk);border-color:var(--sage-mid)}
+.hg-scale div.best{background:var(--sage-dk);color:#fff;border-color:var(--sage-dk);font-weight:700}
+html[data-theme="dark"] .hg-scale div.best{color:#17200f}
+.hg-bar p{margin:6px 0 0;font-size:.88rem;color:var(--ink2)}
+.hg-temp{position:relative;height:30px;border-radius:6px;background:linear-gradient(90deg,#7fa7c9,#cfdcc0 45%,#e8c98f 75%,#d98c5f);border:1px solid var(--border)}
+html[data-theme="dark"] .hg-temp{background:linear-gradient(90deg,#3d5d78,#4e5e44 45%,#7a6334 75%,#7c4429)}
+.hg-temp .band{position:absolute;top:3px;bottom:3px;border:2px solid var(--ink);border-radius:5px;background:rgba(255,255,255,.28)}
+.hg-temp .min{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--rust);border-radius:2px}
+.hg-temp-ax{display:flex;justify-content:space-between;font-size:.72rem;color:var(--ink3);margin-top:3px}
+
+/* sections in plant page */
+.hg-care dl{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:8px 16px;margin:0}
+.hg-care dt{font-weight:600;color:var(--ink2)}
+.hg-care dd{margin:0}
+@media (max-width:560px){.hg-care dl{grid-template-columns:1fr}.hg-care dd{margin-bottom:6px}}
+.hg-safety{border-left:5px solid var(--rust)}
+.hg-safety.safe{border-left-color:var(--ok)}
+.hg-safety.unk{border-left-color:var(--warn)}
+.hg-list{margin:0;padding-left:20px}
+.hg-list li{margin:3px 0}
+.hg-src li{margin:6px 0}
+.hg-xlinks a{display:block;padding:10px 12px;border:1px solid var(--border);border-radius:10px;margin:6px 0;text-decoration:none;color:var(--ink)}
+.hg-xlinks a:hover{border-color:var(--sage-mid)}
+.hg-xlinks b{color:var(--sage-dk)}
+
+/* finder */
+.hg-q{margin:0 0 14px}
+.hg-q>b{display:block;margin-bottom:6px}
+.hg-res{display:flex;gap:14px;align-items:flex-start;padding:12px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);margin:0 0 10px;cursor:pointer;text-align:left;width:100%;box-shadow:var(--shadow)}
+.hg-res:hover{border-color:var(--sage-mid)}
+.hg-res .hg-ph{width:92px;height:92px;border-radius:9px;flex-shrink:0}
+.hg-res b{font-family:var(--f-head);font-size:1.1rem}
+.hg-res ul{margin:4px 0 0;padding-left:18px;font-size:.88rem;color:var(--ink2)}
+.hg-res .why-no{color:var(--rust)}
+.hg-score{margin-left:auto;font-weight:700;color:var(--sage-dk);font-size:.95rem;white-space:nowrap}
+
+/* tools hub, learn, help */
+.hg-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.hg-tool{padding:16px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;box-shadow:var(--shadow)}
+.hg-tool:hover{border-color:var(--sage-mid)}
+.hg-tool[disabled]{cursor:default;opacity:1;background:var(--paper2)}
+.hg-tool span.i{font-size:1.6rem}
+.hg-tool b{font-family:var(--f-head);font-size:1.1rem}
+.hg-tool small{color:var(--ink2)}
+.hg-ltabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px}
+.hg-tbl{overflow-x:auto}
+.hg-tbl table{width:100%;border-collapse:collapse;font-size:.92rem}
+.hg-tbl th,.hg-tbl td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+.hg-tbl thead th{background:var(--sage-pale);color:var(--sage-dk)}
+.hg-faq{border-bottom:1px solid var(--border);padding:10px 0}
+.hg-faq summary{cursor:pointer;font-weight:600}
+.hg-faq p{margin:8px 0 0;color:var(--ink2)}
+.hg-gloss dt{font-weight:700;margin-top:10px;color:var(--sage-dk)}
+.hg-gloss dd{margin:2px 0 0;color:var(--ink2)}
+.hg-month{display:grid;grid-template-columns:110px 1fr;gap:6px 14px;border-bottom:1px solid var(--border);padding:10px 0}
+.hg-month b{font-family:var(--f-head)}
+footer.hg-foot{max-width:1180px;margin:0 auto;padding:10px 16px 40px;color:var(--ink3);font-size:.85rem}
+footer.hg-foot a{color:var(--ink2)}
+@media print{#hg-head,#hg-bottom,.hg-back,footer.hg-foot,.hg-quick{display:none}body{background:#fff}.hg-sec{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<a class="sr" href="#main">Skip to content</a>
+<header id="hg-head"><div class="hg-head-in">
+  <button type="button" class="hg-brand" onclick="nav('#/')" aria-label="Houseplant Guide home">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="var(--sage-pale)" stroke="var(--sage-dk)" stroke-width="1.2"/><path d="M20 32 C20 24 20 18 21 12" fill="none" stroke="var(--sage-dk)" stroke-width="1.6" stroke-linecap="round"/><path d="M21 13 C26 8 32 9 33 12 C29 17 24 17 21 13Z" fill="var(--sage)"/><path d="M20 21 C15 16 9 17 8 20 C12 25 17 25 20 21Z" fill="var(--sage)"/><path d="M20 27 C24 23 29 24 30 27 C27 30 23 30 20 27Z" fill="var(--sage-mid)"/></svg>
+    <span><b>Houseplant Guide</b><small>Sourced care, plant by plant</small></span>
+  </button>
+  <nav class="hg-tabs" aria-label="Main">
+    <button type="button" class="hg-tab" data-v="home" onclick="nav('#/')">Home</button>
+    <button type="button" class="hg-tab" data-v="plants" onclick="nav('#/plants')">Plants</button>
+    <button type="button" class="hg-tab" data-v="finder" onclick="nav('#/finder')">Finder</button>
+    <button type="button" class="hg-tab" data-v="learn" onclick="nav('#/learn/light')">Learn</button>
+    <button type="button" class="hg-tab" data-v="tools" onclick="nav('#/tools')">Tools</button>
+  </nav>
+  <div class="hg-acts">
+    <button type="button" class="hg-ibtn" onclick="hgThemeCycle()" title="Theme: Auto, Dark or Light" aria-label="Change theme"><span class="hg-theme-i">🖥️</span></button>
+    <button type="button" class="hg-ibtn" onclick="nav('#/help')" title="Help and FAQ" aria-label="Help and FAQ">?</button>
+  </div>
+</div></header>
+<main id="main" tabindex="-1"></main>
+<footer class="hg-foot">Houseplant Guide v1.0 (in progress) · <a href="#/sources">Sources</a> · <a href="#/help">Help</a> · <a href="https://beneathtrees.org/" target="_blank" rel="noopener">beneathtrees.org</a><br>Care facts come from university extension services, the ASPCA and specialist societies. Pet safety is not veterinary advice.</footer>
+<nav id="hg-bottom" aria-label="Main">
+  <button type="button" data-v="home" onclick="nav('#/')"><span>🏠</span>Home</button>
+  <button type="button" data-v="plants" onclick="nav('#/plants')"><span>🪴</span>Plants</button>
+  <button type="button" data-v="finder" onclick="nav('#/finder')"><span>🔎</span>Finder</button>
+  <button type="button" data-v="learn" onclick="nav('#/learn/light')"><span>📖</span>Learn</button>
+  <button type="button" data-v="more" onclick="hgMore(true)"><span>☰</span>More</button>
+</nav>
+<div id="hg-more" class="hg-sheet-wrap"><div class="hg-sheet" role="dialog" aria-label="More"><div class="hg-sheet-grab"></div>
+  <button type="button" onclick="hgMore(false);nav('#/tools')"><span>🧰</span>Tools</button>
+  <button type="button" onclick="hgMore(false);nav('#/sources')"><span>📚</span>Sources</button>
+  <button type="button" onclick="hgMore(false);nav('#/help')"><span>❓</span>Help and FAQ</button>
+  <button type="button" onclick="hgThemeCycle()"><span class="hg-theme-i">🖥️</span><span class="hg-theme-n">Theme: Auto</span></button>
+</div></div>
+<script data-file="data/core.js">
+// One namespace for all data and settings. Data blocks below fill it.
+var HG = globalThis.HG = { version: '1.0.0-dev', built: '2026-11-18' };
+</script>
+<script data-file="data/sources.js">
+// ═══ SOURCES. checked: "verified" = read during an update and matches the entry; "cited" = named but not re-read; "approx" = general knowledge ═══
+HG.sources = [
+  { id:'aspca-cats', title:'Toxic and Non-Toxic Plant List: Cats', publisher:'ASPCA Animal Poison Control', url:'https://www.aspca.org/pet-care/animal-poison-control/cats-plant-list', type:'toxicity', checked:'verified', note:'Read 18 Nov 2026 for all 30 plants.' },
+  { id:'aspca-dogs', title:'Toxic and Non-Toxic Plant List: Dogs', publisher:'ASPCA Animal Poison Control', url:'https://www.aspca.org/pet-care/animal-poison-control/dogs-plant-list', type:'toxicity', checked:'verified', note:'Read 18 Nov 2026 for all 30 plants.' },
+  { id:'aspca-peace', title:'Peace Lily', publisher:'ASPCA', url:'https://www.aspca.org/pet-care/aspca-poison-control/toxic-and-non-toxic-plants/peace-lily', type:'toxicity', checked:'verified' },
+  { id:'aspca-snake', title:'Snake Plant', publisher:'ASPCA', url:'https://www.aspca.org/pet-care/aspca-poison-control/toxic-and-non-toxic-plants/snake-plant', type:'toxicity', checked:'verified' },
+  { id:'aspca-cornstalk', title:'Cornstalk Plant', publisher:'ASPCA', url:'https://www.aspca.org/pet-care/aspca-poison-control/toxic-and-non-toxic-plants/cornstalk-plant', type:'toxicity', checked:'verified' },
+  { id:'aspca-aloe', title:'Aloe', publisher:'ASPCA', url:'https://www.aspca.org/pet-care/aspca-poison-control/toxic-and-non-toxic-plants/aloe', type:'toxicity', checked:'verified' },
+  { id:'aspca-begonia', title:'Begonia', publisher:'ASPCA', url:'https://www.aspca.org/pet-care/aspca-poison-control/toxic-and-non-toxic-plants/begonia', type:'toxicity', checked:'verified' },
+  { id:'aspca-bop', title:'Bird of Paradise Flower', publisher:'ASPCA', url:'https://www.aspca.org/pet-care/aspca-poison-control/toxic-and-non-toxic-plants/bird-paradise-flower', type:'toxicity', checked:'verified' },
+  { id:'aspca-philodendron', title:'Red Princess (Philodendron)', publisher:'ASPCA', url:'https://www.aspca.org/pet-care/aspca-poison-control/toxic-and-non-toxic-plants/red-princess', type:'toxicity', checked:'verified', note:'The page lists the plant under Philodendron bipennifolium.' },
+  { id:'aspca-ficus', title:'Indian Rubber Plant (Ficus benjamina)', publisher:'ASPCA', url:'https://www.aspca.org/pet-care/aspca-poison-control/toxic-and-non-toxic-plants/indian-rubber-plant', type:'toxicity', checked:'verified', note:'Covers Ficus benjamina, not Ficus elastica.' },
+  { id:'umn-light', title:'Light requirements for houseplants', publisher:'University of Minnesota Extension', url:'https://extension.umn.edu/planting-and-growing-guides/light-requirements-houseplants', type:'extension', checked:'verified' },
+  { id:'mu-light', title:'Lighting Indoor Houseplants (G6515)', publisher:'University of Missouri Extension', url:'https://extension.missouri.edu/publications/g6515', type:'extension', checked:'verified' },
+  { id:'ncsu-pothos', title:'Epipremnum aureum', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/epipremnum-aureum/', type:'extension', checked:'verified' },
+  { id:'ncsu-heartleaf', title:'Philodendron hederaceum', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/philodendron-hederaceum/', type:'extension', checked:'verified' },
+  { id:'ncsu-snake', title:'Dracaena trifasciata', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/dracaena-trifasciata/', type:'extension', checked:'verified' },
+  { id:'ncsu-zz', title:'Zamioculcas zamiifolia', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/zamioculcas-zamiifolia/common-name/zz-plant/', type:'extension', checked:'verified' },
+  { id:'ncsu-spider', title:'Chlorophytum comosum', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/chlorophytum-comosum/', type:'extension', checked:'verified' },
+  { id:'ncsu-peace', title:'Spathiphyllum', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/spathiphyllum/', type:'extension', checked:'verified' },
+  { id:'ncsu-castiron', title:'Aspidistra elatior', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/aspidistra-elatior/common-name/cast-iron-plant/', type:'extension', checked:'verified' },
+  { id:'ncsu-aglaonema', title:'Aglaonema', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/aglaonema/', type:'extension', checked:'verified' },
+  { id:'ncsu-dracaena', title:'Dracaena fragrans', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/dracaena-fragrans/common-name/cornstalk-plant/', type:'extension', checked:'verified' },
+  { id:'ncsu-parlor', title:'Chamaedorea elegans', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/chamaedorea-elegans/common-name/parlor-palm/', type:'extension', checked:'verified' },
+  { id:'ncsu-monstera', title:'Monstera deliciosa', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/monstera-deliciosa/common-name/swiss-cheese-plant/', type:'extension', checked:'verified' },
+  { id:'ncsu-fiddle', title:'Ficus lyrata', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/ficus-lyrata/', type:'extension', checked:'verified' },
+  { id:'ncsu-rubber', title:'Ficus elastica', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/ficus-elastica/', type:'extension', checked:'verified' },
+  { id:'ncsu-bop', title:'Strelitzia reginae', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/strelitzia-reginae/', type:'extension', checked:'verified' },
+  { id:'ncsu-boston', title:'Nephrolepis exaltata', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/nephrolepis-exaltata/', type:'extension', checked:'verified' },
+  { id:'ncsu-hoya', title:'Hoya carnosa', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/hoya-carnosa/', type:'extension', checked:'verified', note:'The page lists the older family name Asclepiadaceae; Hoya is now placed in Apocynaceae.' },
+  { id:'ncsu-kerrii', title:'Hoya kerrii', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/hoya-kerrii', type:'extension', checked:'verified' },
+  { id:'ncsu-erubescens', title:'Philodendron erubescens', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/philodendron-erubescens/', type:'extension', checked:'verified' },
+  { id:'ncsu-anthurium', title:'Anthurium (genus)', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/anthurium/', type:'extension', checked:'verified', note:'Genus page; mentions A. clarinervium.' },
+  { id:'ufl-begonia', title:'Polka Dot Begonia (Aug 2025)', publisher:'University of Florida IFAS Extension, Santa Rosa County', url:'https://sfyl.ifas.ufl.edu/media/sfylifasufledu/santa-rosa/docs/pdfs/demo-garden-5/Polka-Dot-Begonia-final.pdf', type:'extension', checked:'verified' },
+  { id:'ncsu-calathea', title:'Goeppertia orbifolia', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/goeppertia-orbifolia/', type:'extension', checked:'verified' },
+  { id:'ncsu-phal', title:'Phalaenopsis', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/phalaenopsis/', type:'extension', checked:'verified' },
+  { id:'ncsu-jade', title:'Crassula ovata', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/crassula-ovata/', type:'extension', checked:'verified' },
+  { id:'ncsu-aloe', title:'Aloe vera', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/aloe-vera/', type:'extension', checked:'verified' },
+  { id:'ncsu-echeveria', title:'Echeveria', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/echeveria/common-name/echeveria/', type:'extension', checked:'verified' },
+  { id:'ncsu-xmascactus', title:'Schlumbergera', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/schlumbergera/common-name/christmas-cactus/', type:'extension', checked:'verified' },
+  { id:'ncsu-fittonia', title:'Fittonia albivenis', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/fittonia-albivenis/', type:'extension', checked:'verified' },
+  { id:'ncsu-flytrap', title:'Dionaea muscipula', publisher:'NC State Extension Plant Toolbox', url:'https://plants.ces.ncsu.edu/plants/dionaea-muscipula/', type:'extension', checked:'verified' },
+  { id:'icps-dionaea', title:'Grow Dionaea muscipula (Venus flytrap)', publisher:'International Carnivorous Plant Society (J. Brittnacher, updated June 2026)', url:'https://species.carnivorousplants.org/Grow/Dionaea.php', type:'society', checked:'verified' },
+  { id:'icps-drosera', title:'Grow Subtropical Drosera (Sundew)', publisher:'International Carnivorous Plant Society (J. Brittnacher, updated July 2026)', url:'https://species.carnivorousplants.org/Grow/SubtropicalDrosera.php', type:'society', checked:'verified', note:'Covers subtropical sundews in general; D. capensis is named as easy from seed.' },
+  { id:'fws-marimo', title:'Invasive Zebra Mussels Found in Moss Balls (Mar 2021)', publisher:'U.S. Fish & Wildlife Service', url:'https://www.fws.gov/story/2021-03/invasive-zebra-mussels-found-moss-balls', type:'government', checked:'verified' },
+  { id:'utokyo-marimo', title:'Massive marimo algae balls at risk from winter sunburn (Dec 2022)', publisher:'University of Tokyo, Graduate School of Science', url:'https://www.s.u-tokyo.ac.jp/en/info/8207/', type:'research', checked:'verified' },
+  { id:'ukhp-marimo', title:'Marimo Moss Balls care guide', publisher:'UK Houseplants (hobby site)', url:'https://www.ukhouseplants.com/plants/marimo-moss-balls', type:'hobby', checked:'verified', note:'Care routine; no extension or society source was found for home marimo care.' }
+];
+</script>
+<script data-file="data/reference.js">
+// ═══ REFERENCE TABLES used by the plant pages, the finder and the Learn pages ═══
+HG.LIGHT = { 1:{ key:'low', label:'Low', fc:'50 to 250 foot-candles', lux:'about 540 to 2,700 lux', where:'A north window, or a few feet back from an east window. Even low-light plants struggle more than about 10 ft from an average window.' },
+             2:{ key:'medium', label:'Medium', fc:'250 to 1,000 foot-candles', lux:'about 2,700 to 10,800 lux', where:'An east window, or near a west window out of direct sun.' },
+             3:{ key:'high', label:'High (bright)', fc:'over 1,000 foot-candles', lux:'over about 10,800 lux', where:'A south or southwest window. In late spring through early fall, unshaded south light can sunburn plants that want less.' } };
+HG.DIRECT = { avoid:'Keep out of direct sun', some:'A few hours of direct sun is fine', needs:'Wants direct sun' };
+HG.WATER = { dry:{ label:'Let it dry out', short:'Dry fully', n:1, how:'Water deeply, then wait until the soil is dry all the way down. Succulents, snake plants and ZZ plants.' },
+             partial:{ label:'Let the top dry', short:'Top dries', n:2, how:'Water when the top inch or two (or the top quarter of the pot) feels dry.' },
+             moist:{ label:'Keep evenly moist', short:'Moist', n:3, how:'Never soggy, never bone dry. Water when the surface just starts to dry.' },
+             wet:{ label:'Keep wet', short:'Wet', n:4, how:'The pot sits in a tray of pure water. Carnivorous bog plants.' },
+             aquatic:{ label:'Lives in water', short:'In water', n:5, how:'Kept fully underwater.' } };
+HG.HUMID = { low:{ label:'Dry air is fine', n:1 }, medium:{ label:'Average', n:2 }, high:{ label:'Humid (60% or more)', n:3 } };
+HG.PETS = { toxic:'Toxic', nontoxic:'Non-toxic', notlisted:'Not on the ASPCA list', unknown:'No information found' };
+HG.GROUPS = { easy:{ label:'Easy common plants', icon:'🌿' }, statement:{ label:'Statement plants', icon:'🪴' }, collector:{ label:'Collector plants', icon:'💎' },
+              succulent:{ label:'Succulents and cacti', icon:'🌵' }, terrarium:{ label:'Terrarium plants', icon:'🫙' }, carnivorous:{ label:'Carnivorous plants', icon:'🪰' }, aquatic:{ label:'Aquatic', icon:'💧' } };
+HG.DIFF = { easy:'Easy', moderate:'Moderate', challenging:'Challenging' };
+HG.PROP = { 'stem-water':'Stem cuttings in water', 'stem-soil':'Stem cuttings in mix', division:'Division', leaf:'Leaf cuttings', plantlets:'Plantlets on runners', runners:'Runners', offsets:'Offsets (pups)', layering:'Layering', seed:'Seed', root:'Root cuttings' };
+HG.SOILS = { standard:{ label:'All-purpose potting mix', conf:'approx', recipe:'A quality bagged houseplant potting mix in a pot with a drainage hole.' },
+             rich:{ label:'Moisture-holding rich mix', conf:'approx', recipe:'Potting mix high in organic matter (peat or coir and compost), still free-draining.' },
+             chunky:{ label:'Chunky aroid and hoya mix', conf:'approx', recipe:'Potting mix opened up with orchid bark and perlite, so it drains fast and lets air reach the roots.' },
+             gritty:{ label:'Gritty cactus and succulent mix', conf:'approx', recipe:'Cactus mix, or potting mix with plenty of coarse grit, pumice or perlite. Clay pots help it dry.' },
+             bark:{ label:'Orchid bark', recipe:'A bark-based orchid medium with excellent drainage; pure sphagnum is hard to rewet.' },
+             cp:{ label:'Carnivorous plant mix', recipe:'Pure sphagnum moss or peat, or equal parts peat and washed silica sand. No perlite, no fertilizer, no tap water.' },
+             none:{ label:'No soil', recipe:'Kept in water.' } };
+HG.PESTS = { 'mealybugs':'Mealybugs', 'scale':'Scale insects', 'aphids':'Aphids', 'spider-mites':'Spider mites', 'mites':'Mites', 'thrips':'Thrips', 'whiteflies':'Whiteflies', 'fungus-gnats':'Fungus gnats' };
+HG.APPS = { 'living-water':{ name:'Living Water', url:'https://beneathtrees.org/Living_Water/', why:'Planted aquariums without filters, where aquatic plants do the cleaning.' },
+            'shrimp-shelf':{ name:'The Shrimp Shelf', url:'https://beneathtrees.org/The_Shrimp_Shelf/', why:'Plants, mosses and botanicals for shrimp tanks.' },
+            'field-guide':{ name:'Microscopic Life Field Guide', url:'https://beneathtrees.org/Microscopy_Guide/', why:'The soil life in your pots under a microscope: springtails, mites, nematodes and fungus gnat larvae.' } };
+</script>
+<script data-file="data/plants.js">
+// ═══ PLANTS. One object per plant. Fill only what a cited source states; say "not stated" rather than guess. ═══
+// light: min/best 1 low (50-250 fc), 2 medium (250-1,000 fc), 3 high (over 1,000 fc); direct: "avoid" | "some" | "needs" | null (not stated)
+// water: "dry" let the soil dry fully | "partial" let it dry partly | "moist" keep evenly moist | "wet" keep wet | "aquatic" lives in water
+// humidity: best/ok "low" | "medium" | "high" | null; temp: °F, null when not stated; pets: "toxic" | "nontoxic" | "notlisted"
+HG.plants = [
+{
+  id:'golden-pothos', name:'Golden pothos', aka:['Devil’s ivy','Pothos','Taro vine','Ivy arum'], sci:'Epipremnum aureum', family:'Araceae (arum family)',
+  group:'easy', difficulty:'easy', habit:'trailing', size:'Trails 6 to 8 ft or more; can climb much farther with support', growth:'medium',
+  light:{min:1, best:3, direct:null, note:'Prefers bright, indirect light and tolerates low light for long periods. Low light can fade the variegation.'},
+  water:{style:'partial', note:'Use a well-drained mix and let it dry out between waterings. Overwatering can cause root rot and blackened leaf edges.'},
+  humidity:{best:'medium', ok:'low', note:'A humidifier or a tray of wet pebbles helps.'},
+  temp:{min:null, ideal:null, note:'Not stated in the source; average room temperatures suit it.'},
+  soil:'standard', feed:'Every other month, except in winter.',
+  propagation:['stem-water','stem-soil'], propNote:'Vines root easily in water.',
+  native:'Society Islands (French Polynesia)',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Calcium oxalate crystals', signs:'Oral irritation, drooling, vomiting, difficulty swallowing', basis:'Listed as toxic to cats and dogs by the ASPCA; toxic principle from NC State Extension.'},
+  people:{level:'medium', note:'Pain and swelling of the mouth if eaten; sap can irritate skin.'},
+  pests:['mealybugs','scale'], problems:['Root rot and black leaf edges from overwatering','Loss of variegation in low light','Leaves bunching at stem ends over time'],
+  tips:['Wipe the leaves now and then to remove dust.','Prune long stems to keep it bushy.','Give it a support to climb for larger, more mature leaves.'],
+  deeper:'In a pot, pothos keeps its small juvenile leaves. Climbing on a moss pole or plank in good light lets it form much larger leaves, and in the tropics the climbing form has split leaves like a monstera. Its brown aerial roots are what it climbs with.',
+  links:['living-water'], photo:{wiki:'Epipremnum aureum'}, sources:['ncsu-pothos','aspca-cats','aspca-dogs','umn-light']
+},
+{
+  id:'heartleaf-philodendron', name:'Heartleaf philodendron', aka:['Sweetheart plant','Parlor ivy','Cordatum'], sci:'Philodendron hederaceum', family:'Araceae (arum family)',
+  group:'easy', difficulty:'easy', habit:'trailing', size:'4 in to 6 ft tall and wide; stems can grow 4 ft or more', growth:'fast',
+  light:{min:1, best:2, direct:null, note:'Medium light. It tolerates low light and can survive long periods in very low light.'},
+  water:{style:'moist', note:'Keep the soil slightly moist in a well-drained pot, and slow down watering in winter.'},
+  humidity:{best:'medium', ok:'low', note:'Prefers medium humidity but tolerates dry air.'},
+  temp:{min:null, ideal:null, note:'Prefers average indoor temperatures.'},
+  soil:'standard', feed:'Not stated in the source.',
+  propagation:['stem-water','stem-soil'], propNote:'Stem cuttings.',
+  native:'Mexico to tropical America',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Calcium oxalate crystals', signs:'Oral irritation, drooling, vomiting, difficulty swallowing', basis:'Listed as toxic to cats and dogs by the ASPCA.'},
+  people:{level:'low', note:'Mouth pain and swelling if eaten; sap can irritate skin.'},
+  pests:['aphids','spider-mites','mealybugs','scale','thrips'], problems:['Root rot in soil kept too wet','Leaf spots'],
+  tips:['Give it a support if you want it to climb rather than trail.','Water less in winter.'],
+  deeperBasis:'source',
+  deeper:'Often confused with pothos. The heartleaf philodendron has thin, soft new leaves that unfurl from a papery sheath (a stipule) and leaf stalks without a groove; pothos leaves are thicker, and their stalks are grooved.',
+  links:[], photo:{wiki:'Philodendron hederaceum'}, sources:['ncsu-heartleaf','aspca-cats','aspca-dogs']
+},
+{
+  id:'snake-plant', name:'Snake plant', aka:['Mother-in-law’s tongue','Good luck plant','Sansevieria'], sci:'Dracaena trifasciata', family:'Asparagaceae',
+  group:'easy', difficulty:'easy', habit:'upright', size:'Leaves up to 4 ft long and 2 to 4 in wide', growth:'medium',
+  light:{min:1, best:3, direct:'some', note:'Tolerates very low light; does well in a bright spot with indirect light or a few hours of sun.'},
+  water:{style:'dry', note:'Let the soil dry between waterings from spring to autumn. In winter, water only every one to two months. Overwatering rots the roots.'},
+  humidity:{best:'low', ok:'low', note:'Tolerates low humidity.'},
+  temp:{min:50, ideal:null, note:'Tolerates cool temperatures around 50°F (10°C).'},
+  soil:'gritty', feed:'Not stated in the source.',
+  propagation:['division','leaf'], propNote:'Division, or cuttings.',
+  native:'West and west-central Africa',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Saponins', signs:'Nausea, vomiting, diarrhea', basis:'ASPCA (Sansevieria trifasciata).'},
+  people:{level:'low', note:'Sap can irritate skin.'},
+  pests:['mealybugs','spider-mites','thrips','scale'], problems:['Root rot from overwatering, especially in winter'],
+  tips:['One of the hardest houseplants to kill: the most common mistake is watering too often.','It rarely blooms indoors.'],
+  deeperBasis:'source',
+  deeper:'Botanists moved the snake plants from Sansevieria into Dracaena, so labels and older books still call it Sansevieria trifasciata. The ASPCA lists it under the old name.',
+  links:[], photo:{wiki:'Dracaena trifasciata', alt:['Sansevieria trifasciata']}, sources:['ncsu-snake','aspca-snake','aspca-cats']
+},
+{
+  id:'zz-plant', name:'ZZ plant', aka:['Zanzibar gem','Eternity plant','Emerald palm'], sci:'Zamioculcas zamiifolia', family:'Araceae (arum family)',
+  group:'easy', difficulty:'easy', habit:'upright', size:'2 to 4 ft tall and wide', growth:'slow',
+  light:{min:1, best:3, direct:'avoid', note:'Grows in very low light, even fluorescent light, but does best in bright indirect light. Direct sun can scorch the leaves.'},
+  water:{style:'dry', note:'Let the soil dry out completely between waterings: about once a month in winter and about twice a month in summer. It does not tolerate wet feet.'},
+  humidity:{best:null, ok:null, note:'Not stated in the source.'},
+  temp:{min:null, ideal:null, note:'If summered outdoors, bring it in when temperatures fall below 60°F (16°C).'},
+  soil:'gritty', feed:'Balanced liquid houseplant fertilizer once or twice a year.',
+  propagation:['division','leaf'], propNote:'Division, or leaf cuttings.',
+  native:'Eastern and southern tropical Africa',
+  pets:{cats:'notlisted', dogs:'notlisted', principle:'Calcium oxalate', signs:'Vomiting and diarrhea if eaten in quantity', basis:'Not on the ASPCA list. NC State Extension rates it of medium toxicity to cats and dogs, so treat it as toxic.', treat:'toxic'},
+  people:{level:'medium', note:'Leaves can cause diarrhea and vomiting if eaten in quantity.'},
+  pests:['scale'], problems:['Rot if the soil stays wet'],
+  tips:['Treat it much like a succulent: water deeply, then wait until it is dry.','Its thick stems and underground rhizomes store water.'],
+  deeper:'The glossy "leaves" are actually leaflets on one long compound leaf that rises straight from the rhizome. A single leaflet laid on damp mix will slowly grow a new rhizome.',
+  links:[], photo:{wiki:'Zamioculcas'}, sources:['ncsu-zz','aspca-cats','aspca-dogs']
+},
+{
+  id:'spider-plant', name:'Spider plant', aka:['Ribbon plant','Spider ivy','Airplane plant'], sci:'Chlorophytum comosum', family:'Asparagaceae',
+  group:'easy', difficulty:'easy', habit:'trailing', size:'1 to 1½ ft tall, 1 to 2 ft wide', growth:'medium',
+  light:{min:1, best:2, direct:'avoid', note:'Medium light; tolerates deep shade. It does not like direct sun.'},
+  water:{style:'moist', note:'Grows best in moist soil but tolerates drought. Water less in winter.'},
+  humidity:{best:'medium', ok:'low', note:'Medium humidity; a humidifier or pebble tray helps.'},
+  temp:{min:45, ideal:null, note:'Keep above 45°F (7°C).'},
+  soil:'standard', feed:'Do not overfeed: too much fertilizer reduces the number of baby plants.',
+  propagation:['plantlets','division'], propNote:'Baby plants form on long runners, most readily after three weeks of short days (under 12 hours of light).',
+  native:'Tropical and southern Africa',
+  pets:{cats:'nontoxic', dogs:'nontoxic', basis:'Listed as non-toxic to cats and dogs by the ASPCA.'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:[], problems:['Brown leaf tips from chlorine and fluoride in tap water'],
+  tips:['Use rain, distilled or filtered water if the tips brown.','Pot up the baby plants while they are still on the runner, then cut them free.'],
+  deeper:'Cats often chew spider plants. They are on the ASPCA non-toxic list, but chewing any plant can upset a cat’s stomach.',
+  links:[], photo:{wiki:'Chlorophytum comosum'}, sources:['ncsu-spider','aspca-cats','aspca-dogs']
+},
+{
+  id:'peace-lily', name:'Peace lily', aka:['White sails','Spathe flower'], sci:'Spathiphyllum', family:'Araceae (arum family)',
+  group:'easy', difficulty:'easy', habit:'upright', size:'Typically about 3 ft tall and wide indoors; dwarf types are smaller', growth:'medium',
+  light:{min:1, best:2, direct:'avoid', note:'Partial to deep shade. Keep it out of direct sun.'},
+  water:{style:'moist', note:'Keep moist but not soggy, letting the top dry between waterings. Watering from the bottom works well.'},
+  humidity:{best:null, ok:null, note:'Not stated; low humidity is one cause of brown tips.'},
+  temp:{min:60, ideal:[68,85], note:'Best at 68 to 85°F by day with no more than a 10° drop at night. 40 to 60°F slows growth; long spells below 40°F damage it.'},
+  soil:'rich', feed:'Quarter-strength, flushing the soil between feedings; too much fertilizer burns leaf tips and roots.',
+  propagation:['division'], propNote:'Division.',
+  native:'Tropical Americas, Malesia and western Pacific islands',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Insoluble calcium oxalates', signs:'Burning of the mouth, drooling, vomiting, difficulty swallowing', basis:'ASPCA (Spathiphyllum).'},
+  people:{level:'medium', note:'Severe mouth pain and burning if eaten.'},
+  pests:['mealybugs','mites'], problems:['Brown tips from salt buildup, overfeeding or dry air'],
+  tips:['It droops dramatically when dry and perks up after watering, but repeated wilting stresses it.','Keep it a little pot-bound; repot in February or March if needed.','Wipe the leaves with a damp cloth.'],
+  deeper:'Despite the name it is not a true lily. True lilies (Lilium) are dangerous to cats in tiny amounts; peace lilies cause mouth irritation instead, but they are still toxic.',
+  links:[], photo:{wiki:'Spathiphyllum', alt:['Spathiphyllum wallisii']}, sources:['ncsu-peace','aspca-peace']
+},
+{
+  id:'cast-iron-plant', name:'Cast iron plant', aka:['Iron plant','Barroom plant'], sci:'Aspidistra elatior', family:'Asparagaceae',
+  group:'easy', difficulty:'easy', habit:'upright', size:'1 to 3 ft tall and wide', growth:'slow',
+  light:{min:1, best:1, direct:'avoid', note:'Partial to full shade; it does not like direct sun. A good choice for dim spots.'},
+  water:{style:'partial', note:'Water regularly from spring to autumn and sparingly in winter. Drought tolerant.'},
+  humidity:{best:null, ok:'low', note:'Not stated in the source.'},
+  temp:{min:null, ideal:null, note:'Hardy outdoors in USDA zones 7 to 11, so it handles cool rooms.'},
+  soil:'standard', feed:'Not stated in the source.',
+  propagation:['division'], propNote:'Spreads by rhizomes; divide them.',
+  native:'Japan',
+  pets:{cats:'nontoxic', dogs:'nontoxic', basis:'ASPCA non-toxic list.'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:[], problems:['No serious pest problems'],
+  tips:['Named for how much neglect it tolerates.'],
+  deeper:'One of the few houseplants that is also a hardy garden plant in much of the southern United States.',
+  links:[], photo:{wiki:'Aspidistra elatior'}, sources:['ncsu-castiron','aspca-cats','aspca-dogs']
+},
+{
+  id:'chinese-evergreen', name:'Chinese evergreen', aka:['Aglaonema','Philippine evergreen'], sci:'Aglaonema', family:'Araceae (arum family)',
+  group:'easy', difficulty:'easy', habit:'upright', size:'About 1 to 1½ ft tall and wide', growth:'medium',
+  light:{min:1, best:2, direct:'avoid', note:'Diffuse sun or good indirect light; tolerates deep shade.'},
+  water:{style:'moist', note:'Keep moist from spring to fall and water less in winter, letting it dry a little between waterings. Avoid cold water.'},
+  humidity:{best:'high', ok:'low', note:'Prefers high humidity but tolerates drier air.'},
+  temp:{min:null, ideal:[70,80], note:'Intolerant of cold; prefers 70 to 80°F by day.'},
+  soil:'standard', feed:'Not stated in the source.',
+  propagation:['division','stem-soil'], propNote:'Division and stem cuttings.',
+  native:'Tropical Southeast Asia and New Guinea',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Calcium oxalate crystals', signs:'Painful, swollen mouth, vomiting, drooling, difficulty swallowing', basis:'ASPCA (Aglaonema modestum); signs from NC State Extension.'},
+  people:{level:'low', note:'Sap can cause a rash.'},
+  pests:['aphids','mealybugs','spider-mites','scale'], problems:['Root rot from overwatering','Brown leaves in very dry air or drafts'],
+  tips:['Remove flowers to keep its energy in the leaves.','Varieties with pink, red or silver leaves usually want more light than plain green ones.'],
+  deeper:'Plants become leggy with age; cutting back a tall stem and rooting the top restarts it.',
+  links:[], photo:{wiki:'Aglaonema', alt:['Aglaonema commutatum']}, sources:['ncsu-aglaonema','aspca-cats','aspca-dogs']
+},
+{
+  id:'dracaena-janet-craig', name:'Dracaena ‘Janet Craig’', aka:['Corn plant','Dragon tree'], sci:'Dracaena fragrans ‘Janet Craig’', family:'Asparagaceae',
+  group:'easy', difficulty:'easy', habit:'upright', size:'3 to 6 ft tall for this cultivar', growth:'slow',
+  light:{min:1, best:2, direct:'avoid', note:'Bright to moderate filtered light. Direct sun burns the leaves; too little light makes them narrow.'},
+  water:{style:'moist', note:'Keep the soil moist in the growing season and water less in winter. Use a pot with drainage holes.'},
+  humidity:{best:'medium', ok:'low', note:'Dry winter air can brown the tips; a humidifier may help.'},
+  temp:{min:50, ideal:[70,80], note:'Keep above 50°F (10°C); thrives at 70 to 80°F.'},
+  soil:'standard', feed:'Not stated in the source.',
+  propagation:['stem-soil'], propNote:'Stem cuttings.',
+  native:'Tropical Africa',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Saponins', signs:'Vomiting (sometimes with blood), depression, loss of appetite, drooling; dilated pupils in cats', basis:'ASPCA (Dracaena fragrans).'},
+  people:{level:'low', note:'Mouth and stomach irritation if eaten.'},
+  pests:['thrips','mealybugs','scale'], problems:['Brown leaf tips from fluoride and built-up salts'],
+  tips:['Use non-fluoridated water and flush the soil monthly if the tips brown.','Repot when it starts lifting out of the pot or roots come out the bottom.'],
+  deeperBasis:'source',
+  deeper:'‘Janet Craig’ is the solid green cultivar of Dracaena fragrans, the corn plant.',
+  links:[], photo:{wiki:'Dracaena fragrans', note:'Photo may show another corn plant cultivar.'}, sources:['ncsu-dracaena','aspca-cornstalk']
+},
+{
+  id:'parlor-palm', name:'Parlor palm', aka:['Neanthe bella palm','Good luck palm'], sci:'Chamaedorea elegans', family:'Arecaceae (palm family)',
+  group:'easy', difficulty:'easy', habit:'upright', size:'Usually under 5 ft indoors', growth:'slow',
+  light:{min:1, best:3, direct:null, note:'Bright indirect light is best, ideally near a north or east window. Tolerates low light.'},
+  water:{style:'partial', note:'Let the soil dry slightly between waterings. It tolerates short dry spells, but overwatering is a common problem.'},
+  humidity:{best:'medium', ok:'low', note:'Low to medium; tolerates dry air.'},
+  temp:{min:null, ideal:null, note:'Protect from cold drafts near windows, doors and vents.'},
+  soil:'standard', feed:'Now and then in the growing season, not in winter.',
+  propagation:[], propNote:'Not covered in the source. Pots usually hold several seedlings grown together.',
+  native:'Southern Mexico to Honduras',
+  pets:{cats:'nontoxic', dogs:'nontoxic', basis:'ASPCA non-toxic list.'},
+  people:{level:'low', note:'Fruit juice can irritate skin.'},
+  pests:['spider-mites','mealybugs','thrips','scale'], problems:['Root rot from overwatering'],
+  tips:['Repot only when needed, about every other year.','Mist and wipe the leaves to discourage spider mites.'],
+  deeperBasis:'source',
+  deeper:'Growers pot three or more seedlings together for a fuller look; it does not branch, so each stem is a separate plant.',
+  links:[], photo:{wiki:'Chamaedorea elegans'}, sources:['ncsu-parlor','aspca-cats','aspca-dogs']
+},
+{
+  id:'monstera', name:'Monstera', aka:['Swiss cheese plant','Split-leaf philodendron','Ceriman'], sci:'Monstera deliciosa', family:'Araceae (arum family)',
+  group:'statement', difficulty:'easy', habit:'climbing', size:'About 6 to 8 ft in most homes', growth:'fast',
+  light:{min:2, best:2, direct:'avoid', note:'Moderate brightness but not direct sun. Variegated forms need more light than plain green ones.'},
+  water:{style:'partial', note:'Water thoroughly, then let the top quarter to third of the soil dry.'},
+  humidity:{best:'high', ok:null, note:'High; a humidifier or pebble tray helps in dry indoor air.'},
+  temp:{min:null, ideal:[60,85], note:'Average warm range of 60 to 85°F.'},
+  soil:'chunky', feed:'Not stated in the source.',
+  propagation:['stem-water','stem-soil','layering'], propNote:'Stem cuttings or layering; a cutting needs a node.',
+  native:'Mexico to Panama',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Insoluble calcium oxalate crystals', signs:'Mouth irritation, drooling, vomiting, difficulty swallowing', basis:'ASPCA (as Ceriman, Monstera deliciosa).'},
+  people:{level:'low', note:'Burning mouth if eaten; sap can irritate skin.'},
+  pests:['scale'], problems:['Contact dermatitis from the sap'],
+  tips:['Give it a sturdy support so heavy stems don’t break.','Prune or repot in spring.','Wipe dust off the leaves.'],
+  deeper:'The splits and holes appear only as the plant matures and gets more light; young plants have solid heart-shaped leaves. It can reach 70 ft in the wild.',
+  links:[], photo:{wiki:'Monstera deliciosa'}, sources:['ncsu-monstera','aspca-cats','aspca-dogs']
+},
+{
+  id:'fiddle-leaf-fig', name:'Fiddle-leaf fig', aka:['Banjo fig'], sci:'Ficus lyrata', family:'Moraceae (fig family)',
+  group:'statement', difficulty:'moderate', habit:'tree', size:'2 to 10 ft tall indoors', growth:'medium',
+  light:{min:2, best:3, direct:'avoid', note:'Bright indirect light or partial shade, with protection from afternoon sun.'},
+  water:{style:'partial', note:'Moist but well drained; it is sensitive to overwatering. Leaf drop can follow too much or too little water.'},
+  humidity:{best:'medium', ok:null, note:'Medium humidity.'},
+  temp:{min:55, ideal:null, note:'Keep above 55°F (13°C). Brown spots can follow temperature swings near heating or cooling vents.'},
+  soil:'standard', feed:'Not stated in the source.',
+  propagation:['stem-water','stem-soil'], propNote:'Stem cuttings; wear gloves because of the sap.',
+  native:'Tropical western and central Africa',
+  pets:{cats:'notlisted', dogs:'notlisted', principle:'Stated by NC State Extension as insoluble calcium oxalates', signs:'Mouth irritation, drooling, vomiting', basis:'Not on the ASPCA list. NC State Extension lists it as toxic to cats and dogs if eaten, so treat it as toxic.', treat:'toxic'},
+  people:{level:'low', note:'Sap can irritate skin.'},
+  pests:['scale','aphids','mealybugs','thrips','spider-mites'], problems:['Leaf drop after moves, drafts or watering changes','Leaf scorch from direct sun','Brown spots from temperature swings'],
+  tips:['Pick a bright spot and leave it there: it dislikes being moved.','Can summer on a sheltered patio and come back in before cold weather.'],
+  deeper:'Its reputation for being fussy is mostly about change: new light, a new room or a different watering rhythm often causes leaf drop for a few weeks.',
+  links:[], photo:{wiki:'Ficus lyrata'}, sources:['ncsu-fiddle','aspca-cats','aspca-dogs']
+},
+{
+  id:'rubber-plant', name:'Rubber plant', aka:['Indian rubber plant','Rubber tree'], sci:'Ficus elastica', family:'Moraceae (fig family)',
+  group:'statement', difficulty:'easy', habit:'tree', size:'Usually kept to 2 to 10 ft indoors', growth:'fast',
+  light:{min:2, best:3, direct:'avoid', note:'Bright indirect light or partial shade, with protection from afternoon sun.'},
+  water:{style:'partial', note:'Water regularly but avoid overwatering; water less from fall to late winter. It tolerates dry soil.'},
+  humidity:{best:'medium', ok:null, note:'Medium humidity.'},
+  temp:{min:55, ideal:null, note:'Keep above 55°F (13°C); it does poorly in cold and drafts.'},
+  soil:'standard', feed:'Not stated in the source.',
+  propagation:['layering','stem-soil'], propNote:'Air layering is the classic method; cuttings also work.',
+  native:'Southeast Asia, from Nepal to China and western Malesia',
+  pets:{cats:'notlisted', dogs:'notlisted', signs:'Not stated', basis:'Not on the ASPCA list (its relative Ficus benjamina is listed as toxic). NC State Extension tags it as a problem for cats and dogs, so treat it as toxic.', treat:'toxic'},
+  people:{level:null, note:'Cut leaves drip a milky sap.'},
+  pests:['mealybugs','scale','spider-mites'], problems:['Leaf drop from overwatering, cold or drafts','Yellowing of lower leaves (normal with age)'],
+  tips:['Keep it in one place, away from drafts.','Prune the main stem for a bushier plant, or leave it for a tree shape.','Wipe dust off with a damp cloth.'],
+  deeper:'Dark burgundy, variegated and pink-edged cultivars exist; variegated ones need the brightest spot.',
+  links:[], photo:{wiki:'Ficus elastica'}, sources:['ncsu-rubber','aspca-ficus']
+},
+{
+  id:'bird-of-paradise', name:'Bird of paradise', aka:['Crane flower','Bird’s tongue flower'], sci:'Strelitzia reginae', family:'Strelitziaceae',
+  group:'statement', difficulty:'moderate', habit:'upright', size:'3 to 4 ft tall and wide', growth:'medium',
+  light:{min:3, best:3, direct:'needs', note:'A well-lit, sunny spot. It is one of the few houseplants that wants some direct sun.'},
+  water:{style:'moist', note:'Water freely and feed regularly in spring and summer; keep drier in winter.'},
+  humidity:{best:null, ok:null, note:'Not stated in the source.'},
+  temp:{min:55, ideal:null, note:'Moderate nights of 55 to 65°F (13 to 18°C).'},
+  soil:'standard', feed:'Regularly in spring and summer.',
+  propagation:['division'], propNote:'Division.',
+  native:'South Africa (Cape Provinces to KwaZulu-Natal)',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Gastrointestinal irritants', signs:'Mild nausea, vomiting and drowsiness, mainly from the fruit and seeds', basis:'ASPCA (Strelitzia reginae).'},
+  people:{level:'low', note:'Mild nausea and vomiting, mainly from fruit and seeds.'},
+  pests:['mealybugs','scale','spider-mites'], problems:['Root rot from overwatering or poor drainage','Leaf spots'],
+  tips:['Outdoors in summer it likes a sunny to part-shade spot with good air movement once it is above 70°F.'],
+  deeper:'The plant sold as a large "bird of paradise" for its big leaves is often the white bird of paradise, Strelitzia nicolai, which grows much taller. This entry is S. reginae, the orange-flowered species.',
+  links:[], photo:{wiki:'Strelitzia reginae'}, sources:['ncsu-bop','aspca-bop']
+},
+{
+  id:'boston-fern', name:'Boston fern', aka:['Sword fern'], sci:'Nephrolepis exaltata', family:'Polypodiaceae',
+  group:'statement', difficulty:'moderate', habit:'trailing', size:'2 to 3 ft tall and wide', growth:'fast',
+  light:{min:2, best:3, direct:'avoid', note:'Bright, indirect light.'},
+  water:{style:'moist', note:'Keep the soil moist and never let it dry out. Water less in winter, when growth slows and soggy soil can rot the roots.'},
+  humidity:{best:'high', ok:'medium', note:'High; kitchens and bathrooms suit it, or use a pebble tray.'},
+  temp:{min:null, ideal:[60,70], note:'Best at 60 to 70°F.'},
+  soil:'rich', feed:'Not stated in the source.',
+  propagation:['division','runners'], propNote:'The source does not cover propagation; it reproduces by spores and by runners.',
+  native:'Tropical and subtropical Americas',
+  pets:{cats:'nontoxic', dogs:'nontoxic', basis:'ASPCA non-toxic list.'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:['scale','spider-mites'], problems:['Pests when the air is too dry','Brown dots under the fronds are spores, not pests'],
+  tips:['Looks best in a hanging basket.','Rows of brown dots under the leaflets are normal spore cases.'],
+  deeper:'It sheds leaflets in dry, heated winter air. Many growers move it to a bright bathroom or a cool, bright room for winter.',
+  links:[], photo:{wiki:'Nephrolepis exaltata'}, sources:['ncsu-boston','aspca-cats','aspca-dogs']
+},
+{
+  id:'hoya-carnosa', name:'Wax plant', aka:['Hoya carnosa','Porcelain flower','Honey plant'], sci:'Hoya carnosa', family:'Apocynaceae (dogbane family)',
+  group:'collector', difficulty:'easy', habit:'trailing', size:'Vines; leaves 3 to 6 in long', growth:'fast',
+  light:{min:2, best:3, direct:null, note:'Bright indirect light year-round is ideal.'},
+  water:{style:'partial', note:'Let the soil dry between waterings in a loose, fast-draining mix. Too wet or too dry can cause leaf drop. Use room-temperature water.'},
+  humidity:{best:'high', ok:null, note:'Loves high humidity; a humidifier or pebble tray helps.'},
+  temp:{min:50, ideal:null, note:'If summered outside, bring it in when nights drop below 50°F (10°C).'},
+  soil:'chunky', feed:'Not stated in the source.',
+  propagation:['stem-water','stem-soil'], propNote:'Stem cuttings.',
+  native:'Southeast Asia, Japan and Taiwan',
+  pets:{cats:'nontoxic', dogs:'nontoxic', basis:'ASPCA non-toxic list (as Honey Plant, Hoya carnosa).'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:['mealybugs','fungus-gnats','spider-mites'], problems:['Leaf drop from soil that is too wet or too dry'],
+  tips:['Most plants flower at two or three years old.','Never cut off the short spurs where flowers formed: they bloom again for years.','Tolerates being pot-bound; go up only 2 in in pot size.'],
+  deeper:'Collectors grow hundreds of Hoya species. Their clusters of star-shaped, waxy flowers come back on the same spurs (peduncles) each season, so the plant gets more floriferous with age.',
+  links:[], photo:{wiki:'Hoya carnosa'}, sources:['ncsu-hoya','aspca-cats','aspca-dogs']
+},
+{
+  id:'hoya-kerrii', name:'Sweetheart hoya', aka:['Hoya kerrii','Valentine hoya','Lucky heart'], sci:'Hoya kerrii', family:'Apocynaceae (dogbane family)',
+  group:'collector', difficulty:'moderate', habit:'trailing', size:'Slow vine with heart-shaped leaves', growth:'slow',
+  light:{min:2, best:3, direct:null, note:'Bright, dappled light.'},
+  water:{style:'dry', note:'Let it dry somewhat between waterings in a well-drained mix. It does not tolerate wet soil.'},
+  humidity:{best:'high', ok:'medium', note:'Likes warm, humid spots such as a kitchen or bathroom.'},
+  temp:{min:null, ideal:[65,80], note:'65 to 80°F is ideal; cooler temperatures slow growth and flowering.'},
+  soil:'chunky', feed:'Not stated in the source.',
+  propagation:['stem-soil','leaf'], propNote:'Stem cuttings. A single leaf will root but rarely grows a vine unless a bit of stem is attached.',
+  native:'Indo-China to Malesia',
+  pets:{cats:'notlisted', dogs:'notlisted', basis:'Not on the ASPCA list, which lists Hoya carnosa as non-toxic. NC State Extension tags Hoya kerrii as non-toxic for cats and dogs.', treat:'nontoxic'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:['aphids','spider-mites','mealybugs'], problems:['Root rot from excess water','Thin, wrinkled leaves when it dries out too much','Sticky nectar from the flowers can stain furniture'],
+  tips:['Don’t cut back the long bare stems: new leaves and flowers form on them.','Flowers are fragrant at night.'],
+  deeperBasis:'source',
+  deeper:'The single potted heart leaves sold around Valentine’s Day are rooted leaf cuttings. Most never grow a stem, but one with a piece of stem tissue can grow into a full vine.',
+  links:[], photo:{wiki:'Hoya kerrii'}, sources:['ncsu-kerrii','aspca-cats']
+},
+{
+  id:'pink-princess', name:'Philodendron ‘Pink Princess’', aka:['Pink princess philodendron','Blushing philodendron'], sci:'Philodendron erubescens ‘Pink Princess’', family:'Araceae (arum family)',
+  group:'collector', difficulty:'moderate', habit:'climbing', size:'About 3 ft tall and 16 in wide indoors', growth:null,
+  light:{min:2, best:2, direct:'avoid', note:'Partial shade; avoid direct sun.'},
+  water:{style:'moist', note:'Moist, well-drained soil rich in organic matter. Water at the base and keep water off the leaves; overwatering causes root rot.'},
+  humidity:{best:'high', ok:'medium', note:'Prefers high humidity.'},
+  temp:{min:null, ideal:[65,85], note:'Prefers 65 to 85°F; protect from cold drafts.'},
+  soil:'chunky', feed:'Not stated in the source.',
+  propagation:['stem-water','stem-soil'], propNote:'Stem cuttings.',
+  native:'Colombia (the species)',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Calcium oxalate crystals', signs:'Mouth and stomach irritation', basis:'The ASPCA lists Philodendron species as toxic to cats and dogs; NC State Extension lists this plant as a problem for both.'},
+  people:{level:'low', note:'Mouth and stomach irritation; sap can irritate skin.'},
+  pests:['spider-mites','mealybugs','aphids','scale','thrips'], problems:['Root rot from overwatering','Leaf spot diseases'],
+  tips:['It can climb a moss pole or trellis.'],
+  deeper:'The pink variegation is unstable: stems can revert to plain dark green or grow all-pink leaves, which have no chlorophyll and eventually die. Collectors cut back to a node with balanced variegation. (This is common grower experience; the NC State page does not cover it.)',
+  links:[], photo:{wiki:'Philodendron erubescens', note:'Photo may show the plain species rather than ‘Pink Princess’.'}, sources:['ncsu-erubescens','aspca-philodendron']
+},
+{
+  id:'anthurium-clarinervium', name:'Velvet cardboard anthurium', aka:['Anthurium clarinervium'], sci:'Anthurium clarinervium', family:'Araceae (arum family)',
+  group:'collector', difficulty:'challenging', habit:'upright', size:'1 to 3½ ft tall (genus range)', growth:'slow',
+  light:{min:2, best:3, direct:'avoid', note:'Bright, indirect light; direct sun can scorch the leaves.'},
+  water:{style:'partial', note:'Water when the mix is dry to the touch. Rain or purified water is best; overwatering rots the roots.'},
+  humidity:{best:'high', ok:'high', note:'Warm and very humid; leaf tips brown in dry air.'},
+  temp:{min:65, ideal:[65,85], note:'Thrives at 65 to 85°F.'},
+  soil:'chunky', feed:'Not stated for this species; the genus page suggests high-phosphorus feed for flowering types.',
+  propagation:['division','stem-soil','seed'], propNote:'Stem cuttings or seed.',
+  native:'Southern Mexico (genus range: Mexico to tropical America)',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Calcium oxalate crystals', signs:'Drooling, mouth swelling and pain, vomiting', basis:'The ASPCA lists Anthurium (A. scherzeranum) as toxic; NC State Extension lists the genus as a problem for cats and dogs.'},
+  people:{level:'low', note:'Sap can irritate skin and eyes.'},
+  pests:['mealybugs','spider-mites','whiteflies','scale','aphids','thrips'], problems:['Root rot from overwatering','Brown tips from dry air'],
+  tips:['Wipe the velvet leaves gently with a soft, dry brush rather than a wet cloth.'],
+  deeper:'Grown for its thick, velvety heart-shaped leaves with silvery white veins rather than its flowers. The NC State page covers the genus; care details are genus-level unless noted.',
+  links:[], photo:{wiki:'Anthurium clarinervium'}, sources:['ncsu-anthurium','aspca-cats','aspca-dogs']
+},
+{
+  id:'begonia-maculata', name:'Polka dot begonia', aka:['Begonia maculata','Angel-wing begonia'], sci:'Begonia maculata', family:'Begoniaceae',
+  group:'collector', difficulty:'moderate', habit:'upright', size:'Usually 1 to 2 ft tall when maintained; can reach 2 to 3 ft or more', growth:null,
+  light:{min:2, best:2, direct:'some', note:'Part shade: indirect light with up to a few hours of gentle sun.'},
+  water:{style:'moist', note:'Consistent moisture with good drainage.'},
+  humidity:{best:null, ok:null, note:'Not stated in the source.'},
+  temp:{min:null, ideal:null, note:'Not stated in the source.'},
+  soil:'standard', feed:'Not stated in the source.',
+  propagation:['stem-water','stem-soil'], propNote:'Not stated in the source; cane begonias are commonly grown from stem cuttings.',
+  native:'Brazil',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Soluble calcium oxalates', signs:'Vomiting and drooling; the underground parts are the most toxic', basis:'ASPCA (Begonia spp.).'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:['whiteflies','thrips','spider-mites','mealybugs'], problems:['Powdery mildew','Botrytis','Stem rot'],
+  tips:['Good air movement helps prevent mildew.'],
+  deeper:'A cane begonia: it grows tall jointed stems. Pinching the tips keeps it bushy rather than leggy.',
+  links:[], photo:{wiki:'Begonia maculata'}, sources:['ufl-begonia','aspca-begonia']
+},
+{
+  id:'calathea-orbifolia', name:'Calathea orbifolia', aka:['Round-leaf calathea','Prayer plant'], sci:'Goeppertia orbifolia', family:'Marantaceae (prayer plant family)',
+  group:'collector', difficulty:'challenging', habit:'upright', size:'2 to 3 ft tall, 1 to 2 ft wide; leaves up to 12 in across', growth:'fast',
+  light:{min:2, best:3, direct:'avoid', note:'Bright, indirect light or partial shade; direct sun scorches the leaves.'},
+  water:{style:'moist', note:'Keep consistently moist but not soggy. Distilled or rain water is best: fluoride in tap water browns the tips.'},
+  humidity:{best:'high', ok:'high', note:'At least 60%; use a humidifier or pebble tray.'},
+  temp:{min:65, ideal:[65,75], note:'Consistent 65 to 75°F; avoid drafts and temperature swings.'},
+  soil:'rich', feed:'Monthly in the growing season.',
+  propagation:['division'], propNote:'Division in spring.',
+  native:'Eastern Brazil',
+  pets:{cats:'nontoxic', dogs:'nontoxic', basis:'ASPCA non-toxic list (Calathea spp.).'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:['mealybugs','spider-mites','aphids','scale'], problems:['Brown edges from low humidity or fluoride','Curling from too little water or humidity','Fading in too little light','Leaf spot from wet leaves'],
+  tips:['Wipe the leaves with a damp cloth.'],
+  deeper:'Most calatheas were moved to the genus Goeppertia, so labels use both names. Their leaves rise at night and lower by day, which is why the family is called prayer plants.',
+  links:[], photo:{wiki:'Goeppertia orbifolia', inat:'Goeppertia orbifolia', alt:['Calathea orbifolia']}, sources:['ncsu-calathea','aspca-cats','aspca-dogs']
+},
+{
+  id:'moth-orchid', name:'Moth orchid', aka:['Phalaenopsis','Moon orchid'], sci:'Phalaenopsis (hybrids)', family:'Orchidaceae',
+  group:'collector', difficulty:'moderate', habit:'epiphyte', size:'1½ to 2 ft tall in flower', growth:'slow',
+  light:{min:1, best:2, direct:'avoid', note:'Prefers fairly low light: an east windowsill is ideal; shaded west or south windows also work.'},
+  water:{style:'partial', note:'Water in the morning with tepid water, about weekly for mature plants, and let it drain fully. Let the bark dry somewhat between waterings.'},
+  humidity:{best:'high', ok:'medium', note:'Prefers high humidity.'},
+  temp:{min:null, ideal:null, note:'Prefers warmth. Large white and spring-blooming types need about a week of 55°F (13°C) nights in autumn to start a flower spike; modern dwarf hybrids don’t.'},
+  soil:'bark', feed:'Balanced fertilizer at half strength twice a month, or quarter strength weekly.',
+  propagation:[], propNote:'Not covered in the source. Home propagation is rare; plantlets (keikis) sometimes form on old spikes.',
+  native:'Tropical and subtropical Asia and northeast Australia',
+  pets:{cats:'nontoxic', dogs:'nontoxic', basis:'ASPCA non-toxic list (Phalaenopsis sp.).'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:['scale','mealybugs','thrips','mites'], problems:['Bud drop from changes in temperature, humidity, water or location','Shriveled leaves from underwatering or rotted roots','Botrytis spots on flowers'],
+  tips:['After the flowers fade, cut the spike just above the first node below the old flowers; it often branches and blooms again.','Repot about every two years after flowering, in fresh bark.','Flowers can last four months or more.'],
+  deeper:'An epiphyte: in the wild its roots cling to tree bark in the air. That is why it grows in bark rather than soil, and why soggy medium kills it faster than dryness.',
+  links:[], photo:{wiki:'Phalaenopsis', alt:['Phalaenopsis hybrid', 'Phalaenopsis amabilis'], note:'Photo shows one of many Phalaenopsis.'}, sources:['ncsu-phal','aspca-cats','aspca-dogs']
+},
+{
+  id:'jade-plant', name:'Jade plant', aka:['Money plant','Jade tree','Lucky plant'], sci:'Crassula ovata', family:'Crassulaceae',
+  group:'succulent', difficulty:'easy', habit:'tree', size:'Slowly to 3 to 6 ft tall', growth:'medium',
+  light:{min:3, best:3, direct:'some', note:'Bright light with some afternoon shade.'},
+  water:{style:'dry', note:'Water moderately when the soil is dry, and reduce watering from fall to late winter. Overwatering causes leaf fall and root rot.'},
+  humidity:{best:null, ok:null, note:'Not stated in the source.'},
+  temp:{min:null, ideal:null, note:'Average to cool indoor temperatures.'},
+  soil:'gritty', feed:'Not stated in the source.',
+  propagation:['leaf','stem-soil'], propNote:'Easy from leaf cuttings; stem cuttings also work.',
+  native:'South Africa',
+  pets:{cats:'toxic', dogs:'toxic', signs:'Not stated in the sources read', basis:'ASPCA (as Crassula argentea, an older name for this species).'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:['aphids','scale','spider-mites','mealybugs'], problems:['Leaf drop and root rot from overwatering'],
+  tips:['Rarely blooms indoors.','Grows into a miniature tree as it ages.'],
+  deeper:'Cuttings should dry for a few days until the cut end calluses before they go into gritty mix.',
+  links:[], photo:{wiki:'Crassula ovata'}, sources:['ncsu-jade','aspca-cats','aspca-dogs']
+},
+{
+  id:'aloe-vera', name:'Aloe vera', aka:['Medicinal aloe','Barbados aloe','True aloe'], sci:'Aloe vera', family:'Asphodelaceae',
+  group:'succulent', difficulty:'easy', habit:'rosette', size:'1 to 2 ft tall, 1 to 2½ ft wide', growth:'medium',
+  light:{min:3, best:3, direct:'needs', note:'Full sun to partial shade; give it the sunniest window.'},
+  water:{style:'dry', note:'Let the soil dry fully between waterings and water less in winter. Use a pot with several drainage holes; clay is best.'},
+  humidity:{best:null, ok:null, note:'Not stated in the source.'},
+  temp:{min:null, ideal:null, note:'Not stated; can move outdoors in summer.'},
+  soil:'gritty', feed:'Not stated in the source.',
+  propagation:['offsets','division'], propNote:'Separate the offsets (pups) that form around the base.',
+  native:'Arabian Peninsula',
+  pets:{cats:'toxic', dogs:'toxic', principle:'Saponins and anthraquinones', signs:'Vomiting, lethargy, diarrhea', basis:'ASPCA (Aloe vera).'},
+  people:{level:'low', note:'Eating it can cause cramping and diarrhea; the yellow latex under the skin irritates skin. Test the gel on a small patch first.'},
+  pests:['mealybugs','aphids','scale'], problems:['Root rot from overwatering','Leaf spot, aloe rust and sooty mold'],
+  tips:['Only plants about three years old flower.'],
+  deeper:'For skin use, cut away the outer leaf and use only the clear inner gel; the yellow layer just under the skin is the irritating latex.',
+  links:[], photo:{wiki:'Aloe vera'}, sources:['ncsu-aloe','aspca-aloe']
+},
+{
+  id:'echeveria', name:'Echeveria', aka:['Mexican rosettes','Hens and chicks (some species)'], sci:'Echeveria', family:'Crassulaceae',
+  group:'succulent', difficulty:'moderate', habit:'rosette', size:'1 to 12 in tall and wide', growth:'slow',
+  light:{min:3, best:3, direct:'needs', note:'Full sun; leaf color is better in full sun. Indoors, the brightest window or a grow light.'},
+  water:{style:'dry', note:'Needs little water and a fast-draining mix.'},
+  humidity:{best:null, ok:null, note:'Not stated in the source.'},
+  temp:{min:null, ideal:null, note:'Not frost hardy; bring indoors for winter unless you are frost-free.'},
+  soil:'gritty', feed:'Not stated in the source.',
+  propagation:['offsets','leaf'], propNote:'Root the small rosettes from the base, replant a beheaded crown with an inch of stem, or lay a single leaf on dry mix.',
+  native:'Southwest Texas to northwest Argentina',
+  pets:{cats:'nontoxic', dogs:'nontoxic', basis:'The ASPCA lists several Echeveria species (such as E. elegans) as non-toxic; NC State Extension tags the genus non-toxic.'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:[], problems:['Withered lower leaves can invite disease if left on'],
+  tips:['Remove withered lower leaves.','Stretched, pale growth (etiolation) means it needs more light.'],
+  deeper:'Indoors, even a south window is often too dim for compact rosettes in winter. Under a grow light they keep their tight shape and colors.',
+  links:[], photo:{wiki:'Echeveria', alt:['Echeveria elegans'], note:'Photo shows one of many Echeveria species.'}, sources:['ncsu-echeveria','aspca-cats','aspca-dogs']
+},
+{
+  id:'christmas-cactus', name:'Christmas cactus', aka:['Holiday cactus','Thanksgiving cactus (S. truncata)'], sci:'Schlumbergera', family:'Cactaceae',
+  group:'succulent', difficulty:'easy', habit:'trailing', size:'6 in to 3 ft tall, 1 to 3 ft wide', growth:null,
+  light:{min:2, best:3, direct:'avoid', note:'Bright, indirect light; it does not like direct sun.'},
+  water:{style:'partial', note:'About every one to two weeks, or when the soil is nearly dry. Overwatering causes root rot and mushy stems.'},
+  humidity:{best:'high', ok:'medium', note:'Benefits from high humidity: it is a rainforest cactus.'},
+  temp:{min:null, ideal:[70,80], note:'70 to 80°F in the growing season; 55 to 65°F nights to set buds.'},
+  soil:'gritty', feed:'Not stated in the source.',
+  propagation:['stem-soil'], propNote:'Stem cuttings of one to three segments.',
+  native:'Southeast Brazil',
+  pets:{cats:'nontoxic', dogs:'nontoxic', basis:'ASPCA non-toxic list (Schlumbergera bridgesii).'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:['mealybugs','scale','spider-mites','aphids'], problems:['Bud drop from sudden changes in temperature or light, or from drying out'],
+  tips:['To bloom it needs at least 13 hours of unbroken darkness and 55 to 65°F nights from mid-September to mid-November. Even a lamp at night can stop flowering.'],
+  deeperBasis:'source',
+  deeper:'Christmas cactus (S. russelliana and hybrids) has scalloped, rounded segment edges and blooms in late December; Thanksgiving cactus (S. truncata) has pointed, claw-like teeth and blooms in late November. Most plants sold are Thanksgiving cactus or hybrids. One plant can live over a hundred years.',
+  links:[], photo:{wiki:'Schlumbergera', alt:['Schlumbergera truncata', 'Schlumbergera buckleyi']}, sources:['ncsu-xmascactus','aspca-cats','aspca-dogs'],
+  season:{ 9:'Mid-September: start 13-hour nights and cool 55 to 65°F nights for buds.', 11:'Bud set continues to mid-November; avoid moving the plant once buds form.' }
+},
+{
+  id:'nerve-plant', name:'Nerve plant', aka:['Fittonia','Mosaic plant','Silver nerve'], sci:'Fittonia albivenis', family:'Acanthaceae',
+  group:'terrarium', difficulty:'moderate', habit:'creeping', size:'3 to 8 in tall, 6 to 18 in wide', growth:'slow',
+  light:{min:2, best:2, direct:'avoid', note:'Bright to medium light; direct sun scorches the leaves. Does well under fluorescent lights.'},
+  water:{style:'moist', note:'Water about twice a week in a well-drained mix. It wilts dramatically when dry and recovers after a drink; yellow leaves can mean too much water.'},
+  humidity:{best:'medium', ok:'medium', note:'Medium. Leaves shrivel in dry air or drafts.'},
+  temp:{min:null, ideal:null, note:'Average to cool room temperature.'},
+  soil:'rich', feed:'Not stated in the source.',
+  propagation:['stem-soil'], propNote:'Stem cuttings; creeping stems root on their own.',
+  native:'Bolivia, northern Brazil, Colombia, Peru and Venezuela',
+  pets:{cats:'nontoxic', dogs:'nontoxic', basis:'ASPCA non-toxic list (as Fittonia verschaffeltii).'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:['mealybugs','scale','spider-mites'], problems:['Root rot from overwatering','Shriveled leaves from dry air, drafts or sun'],
+  tips:['Pinch the stem tips to keep it bushy.','Shallow roots: a small pot is enough.','Dwarf forms suit terrariums.'],
+  deeper:'A classic terrarium plant: a closed jar keeps the humidity it likes and stops the dramatic wilting.',
+  links:['field-guide'], photo:{wiki:'Fittonia albivenis'}, sources:['ncsu-fittonia','aspca-cats','aspca-dogs']
+},
+{
+  id:'venus-flytrap', name:'Venus flytrap', aka:['Dionaea'], sci:'Dionaea muscipula', family:'Droseraceae (sundew family)',
+  group:'carnivorous', difficulty:'challenging', habit:'rosette', size:'6 to 12 in tall, 6 to 8 in wide', growth:null,
+  light:{min:3, best:3, direct:'needs', note:'Full sun. It needs more light than a typical windowsill gives; indoors use a strong white LED for about 14 hours a day.'},
+  water:{style:'wet', note:'Keep the pot always sitting in pure water. Use rain, distilled or reverse-osmosis water; tap water is safe only under about 90 ppm dissolved solids.'},
+  humidity:{best:'high', ok:'medium', note:'NC State Extension lists high humidity; the ICPS guide does not stress it.'},
+  temp:{min:null, ideal:null, note:'Hardy outdoors in USDA zones 7 to 10 when dormant.'},
+  soil:'cp', feed:'Never fertilize. Feed live insects or rehydrated dried bloodworms when growth slows; massage the trap gently after feeding dead food.',
+  propagation:['division','seed'], propNote:'Divide every one to two years, keeping a growing point on each piece. Seedlings take years to mature.',
+  native:'Coastal North and South Carolina',
+  pets:{cats:'notlisted', dogs:'notlisted', basis:'Not on the ASPCA list. NC State Extension tags it non-toxic for cats and dogs.', treat:'nontoxic'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:['aphids','spider-mites'], problems:['Black spot','Traps on new leaves fail to form in salty or crowded soil: repot','Older leaves rot in soggy mix'],
+  tips:['Endangered in the wild: buy nursery-grown plants. It is illegal to collect wild plants.','Avoid perlite and other salty mix components.'],
+  deeperBasis:'source',
+  deeper:'Sources disagree on winter dormancy. NC State Extension describes it as deciduous, and growers often give it a cool winter rest. The International Carnivorous Plant Society says indoor plants under constant grow lights do not need dormancy, and that putting a plant in the refrigerator for dormancy "is a waste." Outdoor plants in freezing climates do go dormant and need protection from freeze-drying.',
+  links:[], photo:{wiki:'Venus flytrap'}, sources:['ncsu-flytrap','icps-dionaea']
+},
+{
+  id:'cape-sundew', name:'Cape sundew', aka:['Drosera capensis'], sci:'Drosera capensis', family:'Droseraceae (sundew family)',
+  group:'carnivorous', difficulty:'moderate', habit:'rosette', size:'Not stated in the source', growth:null,
+  light:{min:3, best:3, direct:'needs', note:'More light than a typical windowsill: a bright terrarium, greenhouse or grow light.'},
+  water:{style:'wet', note:'Keep the mix wet with pure (rain, distilled or reverse-osmosis) water, as for other carnivorous plants.'},
+  humidity:{best:'high', ok:'medium', note:'Higher than typical house air.'},
+  temp:{min:50, ideal:[70,80], note:'A moderate range of 50 to 95°F (10 to 35°C); seedlings do best at 70 to 80°F.'},
+  soil:'cp', feed:'No fertilizer in the soil. Soaked dried bloodworms on the dewy leaves; very dilute foliar feed is possible on larger plants.',
+  propagation:['seed','leaf','root'], propNote:'Grows readily from seed; root and leaf cuttings give new plants faster.',
+  native:'South Africa (Western Cape)',
+  pets:{cats:'notlisted', dogs:'notlisted', basis:'Not on the ASPCA list, and no toxicity information was found.', treat:'unknown'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:['fungus-gnats'], problems:['Moss, fungi and cyanobacteria growing over the mix','Mold on uneaten food'],
+  tips:['Most subtropical sundews need no winter dormancy.','It self-seeds readily and can become a weed in a collection.'],
+  deeper:'One of the easiest carnivorous plants. The sticky "dew" on its tentacles catches gnats, and leaves slowly curl around prey.',
+  links:['field-guide'], photo:{wiki:'Drosera capensis'}, sources:['icps-drosera'], conf:'approx'
+},
+{
+  id:'marimo', name:'Marimo moss ball', aka:['Moss ball','Lake ball'], sci:'Aegagropila linnaei', family:'Pithophoraceae (a green alga, not a moss)',
+  group:'aquatic', difficulty:'easy', habit:'aquatic', size:'Shop balls are usually 2 to 4 in across and grow about 0.2 in (5 mm) a year', growth:'slow',
+  light:{min:1, best:2, direct:'avoid', note:'Bright, indirect light away from direct sun, which scorches it. A north window or a spot near a grow light works.'},
+  water:{style:'aquatic', note:'Lives fully underwater. Replace about a third of the water weekly and all of it monthly, using dechlorinated tap water (left to stand 24 hours) or bottled water.'},
+  humidity:{best:null, ok:null, note:'Not applicable: it lives underwater.'},
+  temp:{min:59, ideal:[64,77], note:'About 64 to 77°F (18 to 25°C); below 59°F (15°C) can cause damage.'},
+  soil:'none', feed:'None needed.',
+  propagation:['division'], propNote:'In spring, cut a ball over about 1¼ in (3 cm) across in half and keep both halves.',
+  native:'Lakes of the Northern Hemisphere; the largest grow in Lake Akan, Japan',
+  pets:{cats:'notlisted', dogs:'notlisted', basis:'Not on the ASPCA list (it is an alga, not a plant).', treat:'unknown'},
+  people:{level:null, note:'Not stated in the source.'},
+  pests:[], problems:['Brown, mushy patches from dirty water or too little light','Invasive zebra mussels were found in moss balls sold in 2021'],
+  tips:['Every week or two, rinse it in lukewarm water and roll it gently to keep it round.','Turn it every few weeks so it grows evenly.'],
+  deeperBasis:'source',
+  deeper:'In March 2021, invasive zebra mussels were found in marimo sold in pet stores in 46 states. If you find any, the U.S. Fish & Wildlife Service says to freeze the ball for at least 24 hours, boil it for a minute, or soak it in diluted bleach or undiluted vinegar, then bag it in the trash. Never put a moss ball or its water in drains, waterways or gardens.',
+  links:['living-water','shrimp-shelf'], photo:{wiki:'Marimo'}, sources:['fws-marimo','utokyo-marimo','ukhp-marimo'], conf:'approx'
+}
+];
+</script>
+<script data-file="js/app.js">
+// ═════════════════════════════════════════════════════════════════
+// HOUSEPLANT GUIDE: helpers, photos, views, router
+// ═════════════════════════════════════════════════════════════════
+const S = { view: 'home', id: null, tab: null, rendered: false };
+const BR = { q: '', group: '', light: '', pets: false, diff: '', water: '' };
+const FD = { light: '', direct: false, pets: '', water: '', air: '', exp: '', shown: false };
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const P = id => HG.plants.find(p => p.id === id);
+const SRC = id => HG.sources.find(s => s.id === id);
+const fToC = f => Math.round((f - 32) * 5 / 9);
+const degF = f => `${f}°F (${fToC(f)}°C)`;
+function petStatus(p) { const v = p.pets.cats === 'notlisted' ? (p.pets.treat || 'unknown') : p.pets.cats; const d = p.pets.dogs === 'notlisted' ? (p.pets.treat || 'unknown') : p.pets.dogs; return v === 'toxic' || d === 'toxic' ? 'toxic' : v === 'nontoxic' && d === 'nontoxic' ? 'nontoxic' : 'unknown'; }
+function petChip(p) {
+  const s = petStatus(p), listed = p.pets.cats !== 'notlisted';
+  if (s === 'toxic') return `<span class="chip chip-bad" title="${listed ? 'ASPCA' : 'Not on the ASPCA list; see notes'}">⚠️ Toxic to pets${listed ? '' : '*'}</span>`;
+  if (s === 'nontoxic') return `<span class="chip chip-ok" title="${listed ? 'ASPCA non-toxic list' : 'Not on the ASPCA list; see notes'}">🐾 Pet-safe${listed ? '' : '*'}</span>`;
+  return '<span class="chip chip-warn">❔ Pet safety unknown</span>';
+}
+const diffChip = p => `<span class="chip chip-n">${{ easy: '🌱', moderate: '🌿', challenging: '🌳' }[p.difficulty]} ${HG.DIFF[p.difficulty]}</span>`;
+const lightChip = p => `<span class="chip chip-n" title="Light">☀️ ${HG.LIGHT[p.light.best].label.replace(' (bright)', '')}</span>`;
+const waterChip = p => `<span class="chip chip-n" title="Water">💧 ${HG.WATER[p.water.style].short}</span>`;
+const confBadge = c => `<span class="conf conf-${c}">${{ verified: 'Verified', cited: 'Cited', approx: 'Approximate' }[c] || c}</span>`;
+function nav(h) { if (location.hash === h) route(); else location.hash = h; }
+function toast(t) { let el = document.getElementById('hg-toast'); if (!el) { el = document.createElement('div'); el.id = 'hg-toast'; el.setAttribute('role', 'status'); el.style.cssText = 'position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:10px;z-index:99;font-size:.9rem'; document.body.appendChild(el); } el.textContent = t; el.style.display = 'block'; clearTimeout(el._t); el._t = setTimeout(() => el.style.display = 'none', 1800); }
+
+// ── Theme ──
+function hgThemeCycle() { let c = 'auto'; try { c = localStorage.getItem(HG_THEME_KEY) || 'auto'; } catch (e) { /* ignore */ } const n = c === 'auto' ? 'dark' : c === 'dark' ? 'light' : 'auto'; try { localStorage.setItem(HG_THEME_KEY, n); } catch (e) { /* ignore */ } hgThemeApply(); hgThemePaint(); toast('Theme: ' + n[0].toUpperCase() + n.slice(1)); }
+function hgThemePaint() { let c = 'auto'; try { c = localStorage.getItem(HG_THEME_KEY) || 'auto'; } catch (e) { /* ignore */ } document.querySelectorAll('.hg-theme-i').forEach(el => el.textContent = c === 'dark' ? '🌙' : c === 'light' ? '☀️' : '🖥️'); document.querySelectorAll('.hg-theme-n').forEach(el => el.textContent = 'Theme: ' + c[0].toUpperCase() + c.slice(1)); }
+
+// ── Photos: Wikipedia lead image (Wikimedia Commons), then a Commons file search, then iNaturalist. Free licenses only, always credited. ──
+// A photo is used only when the page, file or taxon matches the plant's own name, so a wrong plant never appears.
+// Requests go through a small queue (3 at a time, iNaturalist about one per second) and are retried when a service is busy.
+// Only real answers are remembered: a found photo for 30 days, a confirmed "no photo" for 1 day, and network errors not at all.
+const HG_PHOTO_KEY = 'hg.photos.v2';
+try { localStorage.removeItem('hg.photos.v1'); } catch (e) { /* ignore */ }
+const hgPhotoCache = (() => { try { return JSON.parse(localStorage.getItem(HG_PHOTO_KEY) || '{}') || {}; } catch (e) { return {}; } })();
+const hgPhotoPending = {}, hgPhotoLog = {};
+const HG_PHOTO_BLOCK = [];   // Commons file names never to show
+const strip = h => { const d = document.createElement('div'); d.innerHTML = h || ''; return (d.textContent || '').replace(/\s+/g, ' ').trim(); };
+const norm = s => String(s).toLowerCase().replace(/[^a-z]+/g, ' ').trim();
+const HG_Q = { n: 0, max: 3, wait: [], inatAt: 0 };
+function hgFetch(url, isInat, tries) {
+  tries = tries || 0;
+  return new Promise(res => { HG_Q.wait.push(res); hgQNext(); }).then(() => {
+    const gap = isInat ? Math.max(0, HG_Q.inatAt + 1100 - Date.now()) : 0;
+    if (isInat) HG_Q.inatAt = Date.now() + gap;
+    return new Promise(r => setTimeout(r, gap)).then(() => fetch(url));
+  }).then(r => { HG_Q.n--; hgQNext(); if ((r.status === 429 || r.status >= 500) && tries < 3) return new Promise(w => setTimeout(w, 1500 * (tries + 1))).then(() => hgFetch(url, isInat, tries + 1)); return r; },
+          e => { HG_Q.n--; hgQNext(); if (tries < 2) return new Promise(w => setTimeout(w, 1500 * (tries + 1))).then(() => hgFetch(url, isInat, tries + 1)); throw e; });
+}
+function hgQNext() { while (HG_Q.n < HG_Q.max && HG_Q.wait.length) { HG_Q.n++; HG_Q.wait.shift()(); } }
+const NETERR = { net: true };   // thrown when a service could not be reached, so the result is not cached
+function licOk(md) { const lic = strip(md.LicenseShortName && md.LicenseShortName.value); return lic && !/fair use|non-free/i.test(lic) ? lic : null; }
+function commonsInfo(ii, md) { let art = strip(md.Artist && md.Artist.value); if (art.length > 60) art = art.slice(0, 57) + '...'; return { src: ii.thumburl || ii.url, page: ii.descriptionurl, credit: (art ? art + ', ' : '') + licOk(md) + ', via Wikimedia Commons' }; }
+function wikiPhoto(title, genus) {
+  return hgFetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(title.replace(/ /g, '_')))
+    .then(r => { if (r.status === 404) return null; if (!r.ok) throw NETERR; return r.json(); }, () => { throw NETERR; })
+    .then(j => {
+      if (!j) return { miss: 'no Wikipedia page' };
+      if (j.type === 'disambiguation') return { miss: 'Wikipedia page is a disambiguation' };
+      const names = [j.title, j.titles && j.titles.canonical, j.titles && j.titles.normalized].filter(Boolean).map(norm);
+      if (!names.some(t => t === norm(title) || t.split(' ')[0] === norm(genus))) return { miss: 'Wikipedia page "' + j.title + '" does not match' };
+      const img = j.originalimage || j.thumbnail; if (!img || !img.source) return { miss: 'Wikipedia page has no lead image' };
+      if (!/upload\.wikimedia\.org\/wikipedia\/commons\//.test(img.source)) return { miss: 'lead image is not on Wikimedia Commons' };
+      const parts = img.source.split('/'), file = decodeURIComponent(/\/thumb\//.test(img.source) ? parts[parts.length - 2] : parts[parts.length - 1]);
+      if (HG_PHOTO_BLOCK.includes(file)) return { miss: 'lead image is blocked' };
+      return hgFetch('https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&prop=imageinfo&iiprop=extmetadata|url&iiurlwidth=900&iiextmetadatafilter=Artist|LicenseShortName&titles=File:' + encodeURIComponent(file))
+        .then(r => { if (!r.ok) throw NETERR; return r.json(); }, () => { throw NETERR; })
+        .then(q => {
+          const pg = q.query && q.query.pages && q.query.pages[Object.keys(q.query.pages)[0]], ii = pg && pg.imageinfo && pg.imageinfo[0];
+          if (!ii) return { miss: 'Commons has no file information' };
+          const md = ii.extmetadata || {}; if (!licOk(md)) return { miss: 'lead image is not freely licensed' };
+          return Object.assign(commonsInfo(ii, md), { via: 'Wikipedia lead image' });
+        });
+    });
+}
+function commonsSearch(names) {
+  const want = names.map(norm).filter(n => n.split(' ').length >= 2);
+  if (!want.length) return Promise.resolve({ miss: 'no two-word name for a Commons search' });
+  const q = 'filetype:bitmap ' + names.map(n => '"' + n + '"').join(' OR ');
+  return hgFetch('https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=15&gsrsearch=' + encodeURIComponent(q) + '&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=900&iiextmetadatafilter=Artist|LicenseShortName')
+    .then(r => { if (!r.ok) throw NETERR; return r.json(); }, () => { throw NETERR; })
+    .then(j => {
+      const pages = Object.values((j.query && j.query.pages) || {}).sort((a, b) => (a.index || 0) - (b.index || 0));
+      for (const pg of pages) {
+        const t = ' ' + norm(pg.title.replace(/^File:/, '').replace(/\.[a-z0-9]+$/i, '')) + ' ';
+        if (HG_PHOTO_BLOCK.includes(pg.title.replace(/^File:/, ''))) continue;
+        if (!want.some(w => t.includes(' ' + w + ' '))) continue;                    // the name, as whole words, in the file name
+        const ii = (pg.imageinfo || [])[0]; if (!ii) continue;
+        const md = ii.extmetadata || {}; if (!licOk(md)) continue;
+        return Object.assign(commonsInfo(ii, md), { via: 'Commons file search' });
+      }
+      return { miss: 'no matching Commons file' };
+    });
+}
+function inatPhoto(name) {
+  return hgFetch('https://api.inaturalist.org/v1/taxa?per_page=10&q=' + encodeURIComponent(name), true)
+    .then(r => { if (!r.ok) throw NETERR; return r.json(); }, () => { throw NETERR; })
+    .then(j => {
+      const t = (j.results || []).find(x => norm(x.name) === norm(name));
+      if (!t) return { miss: 'no exact iNaturalist taxon' };
+      const ph = t.default_photo; if (!ph) return { miss: 'iNaturalist taxon has no photo' };
+      if (!ph.license_code) return { miss: 'iNaturalist photo is all rights reserved' };
+      return { src: ph.medium_url || ph.url, page: 'https://www.inaturalist.org/taxa/' + t.id, credit: (ph.attribution || 'iNaturalist') + ', via iNaturalist', via: 'iNaturalist' };
+    });
+}
+function hgPhoto(p) {
+  const key = p.id, c = hgPhotoCache[key];
+  if (c && Date.now() - c.at < (c.p ? 30 : 1) * 864e5) { hgPhotoLog[key] = c.p ? c.p.via + ' (saved)' : 'none: ' + (c.why || 'no match') + ' (saved)'; return Promise.resolve(c.p); }
+  if (hgPhotoPending[key]) return hgPhotoPending[key];
+  const genus = p.sci.split(' ')[0], wiki = (p.photo && p.photo.wiki) || p.sci, base = p.sci.replace(/\s*[‘'(].*$/, '');
+  const inat = (p.photo && p.photo.inat) || base, names = [base].concat((p.photo && p.photo.alt) || []);
+  const why = []; let netFail = false;
+  const step = (fn) => prev => prev && prev.src ? prev : fn().catch(e => { netFail = true; return { miss: 'service not reachable' }; }).then(x => { if (!x.src) why.push(x.miss); return x; });
+  hgPhotoPending[key] = Promise.resolve(null)
+    .then(step(() => wikiPhoto(wiki, genus)))
+    .then(step(() => commonsSearch(names)))
+    .then(step(() => inatPhoto(inat)))
+    .then(x => {
+      const got = x && x.src ? x : null;
+      hgPhotoLog[key] = got ? got.via : 'none: ' + why.join('; ');
+      if (got || !netFail) { hgPhotoCache[key] = { at: Date.now(), p: got, why: got ? '' : why.join('; ') }; try { localStorage.setItem(HG_PHOTO_KEY, JSON.stringify(hgPhotoCache)); } catch (e) { /* ignore */ } }
+      delete hgPhotoPending[key]; return got;
+    });
+  return hgPhotoPending[key];
+}
+function hgPhotoReset() { Object.keys(hgPhotoCache).forEach(k => delete hgPhotoCache[k]); try { localStorage.removeItem(HG_PHOTO_KEY); } catch (e) { /* ignore */ } }
+function photoCheck() {
+  const box = document.getElementById('photo-check'); if (!box) return;
+  hgPhotoReset(); box.innerHTML = '<p class="hg-note">Checking all plants; this takes about a minute…</p>';
+  const rows = HG.plants.map(p => hgPhoto(p).then(() => [p, hgPhotoLog[p.id]]));
+  Promise.all(rows).then(list => {
+    const n = list.filter(r => !/^none/.test(r[1])).length;
+    box.innerHTML = `<p><b>${n} of ${list.length}</b> plants have a photo.</p><div class="hg-tbl"><table><thead><tr><th>Plant</th><th>Result</th></tr></thead><tbody>${list.map(r => `<tr><td><a href="#/plant/${r[0].id}">${esc(r[0].name)}</a></td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+  });
+}
+function fillPhotos(root) {
+  (root || document).querySelectorAll('[data-photo]').forEach(el => {
+    const p = P(el.getAttribute('data-photo')); el.removeAttribute('data-photo'); if (!p) return;
+    hgPhoto(p).then(x => {
+      if (!x) return;
+      el.innerHTML = `<img src="${x.src}" alt="${esc(p.name)}" loading="lazy" onerror="this.parentNode.classList.remove('has');this.remove()">` + (el.hasAttribute('data-nocredit') ? '' : `<a class="hg-credit" href="${x.page}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(x.credit)}</a>`);
+      el.classList.add('has');
+    });
+  });
+}
+const photoBox = (p, cls, nocredit) => `<div class="hg-ph ${cls || ''}" data-photo="${p.id}"${nocredit ? ' data-nocredit' : ''} role="img" aria-label="Photo of ${esc(p.name)}"></div>`;
+const card = p => `<button type="button" class="hg-card" onclick="nav('#/plant/${p.id}')">${photoBox(p, '', true)}<div class="hg-card-b"><b>${esc(p.name)}</b><i>${esc(p.sci)}</i><div class="hg-card-ic">${diffChip(p)}${petChip(p)}${lightChip(p)}${waterChip(p)}</div></div></button>`;
+
+// ── Home ──
+const SPRIG = `<svg class="hg-sprig" viewBox="0 0 340 300" aria-hidden="true"><g fill="none" stroke="var(--sage-dk)" stroke-width="1.6" stroke-linecap="round">
+<path d="M300 300 C 270 230 240 170 170 110 C 120 70 80 52 30 40"/><path d="M250 225 C 228 190 230 160 262 132 C 270 170 270 200 250 225Z" fill="var(--sage-pale)"/>
+<path d="M250 225 C 248 190 252 160 262 132"/><path d="M205 160 C 170 150 150 125 150 90 C 185 100 205 125 205 160Z" fill="var(--sage-pale)"/><path d="M205 160 C 185 140 165 115 150 90"/>
+<path d="M150 100 C 140 70 150 45 180 30 C 186 62 175 85 150 100Z" fill="var(--sage-pale)"/><path d="M150 100 C 160 75 170 50 180 30"/>
+<path d="M95 68 C 70 72 50 62 40 40 C 66 38 85 48 95 68Z" fill="var(--sage-pale)"/><path d="M95 68 C 78 58 58 47 40 40"/>
+<path d="M290 270 C 320 250 330 220 325 190 C 300 205 288 235 290 270Z" fill="var(--sage-pale)"/><path d="M290 270 C 300 245 315 215 325 190"/>
+<g stroke-width=".8" opacity=".7"><path d="M255 200 l-12 -6M256 180 l-13 -7M258 160 l-12 -8"/><path d="M190 138 l-14 2M175 120 l-13 1"/><path d="M158 82 l12 -5M167 64 l10 -6"/></g></g></svg>`;
+function renderHome(m) {
+  const n = HG.plants.length, safe = HG.plants.filter(p => petStatus(p) === 'nontoxic').length;
+  m.innerHTML = `<div class="view">
+  <section class="hg-hero">${SPRIG}<div class="hg-eyebrow">Houseplant Guide</div><h1>Grow plants that thrive where you live</h1>
+  <p class="hg-lead">Sourced care for ${n} houseplants, from easy pothos to Venus flytraps: light, water, soil, humidity, pet safety and propagation, with collector detail on every plant.</p>
+  <div class="hg-quick"><button class="btn btn-primary" onclick="nav('#/finder')">🔎 Find a plant for my spot</button><button class="btn" onclick="nav('#/plants')">🪴 Browse all plants</button><button class="btn" onclick="BR.pets=true;nav('#/plants')">🐾 Pet-safe plants (${safe})</button></div></section>
+  <h2>Browse by group</h2><div class="hg-groups">${Object.keys(HG.GROUPS).map(g => { const c = HG.plants.filter(p => p.group === g).length; return c ? `<button type="button" class="hg-group" onclick="BR.group='${g}';nav('#/plants')"><span>${HG.GROUPS[g].icon}</span><div><b>${HG.GROUPS[g].label}</b><small>${c} plant${c > 1 ? 's' : ''}</small></div></button>` : ''; }).join('')}</div>
+  <div class="hg-grid2" style="margin-top:22px">
+   <section class="hg-sec"><h3>Start with light</h3><p>Light decides more than anything else which plants will do well in a spot. Your eyes are a poor judge of it, so the guide uses the extension services’ three levels: low, medium and high.</p><button class="btn" onclick="nav('#/learn/light')">☀️ How much light do I have?</button></section>
+   <section class="hg-sec"><h3>Every fact has a source</h3><p>Care details come from university extension services, the ASPCA, and specialist societies, and each plant lists its sources. Where sources disagree, both views are shown.</p><button class="btn" onclick="nav('#/sources')">📚 See the sources</button></section>
+  </div>
+  <h2 style="margin-top:8px">A few to start with</h2><div class="hg-cards">${['golden-pothos', 'snake-plant', 'monstera', 'hoya-carnosa', 'christmas-cactus', 'venus-flytrap'].map(id => card(P(id))).join('')}</div>
+  </div>`;
+}
+
+// ── Browse ──
+function brMatch(p) {
+  const t = BR.q.toLowerCase().trim();
+  if (t && !t.split(/\s+/).every(w => [p.name, p.sci, p.family, ...(p.aka || []), HG.GROUPS[p.group].label].join(' ').toLowerCase().includes(w))) return false;
+  if (BR.group && p.group !== BR.group) return false;
+  if (BR.light && !(p.light.min <= +BR.light && +BR.light <= Math.max(p.light.best, p.light.min))) return false;
+  if (BR.pets && petStatus(p) !== 'nontoxic') return false;
+  if (BR.diff && p.difficulty !== BR.diff) return false;
+  if (BR.water && p.water.style !== BR.water) return false;
+  return true;
+}
+function brSet(k, v) { BR[k] = BR[k] === v ? (typeof v === 'boolean' ? false : '') : v; renderBrowse(document.getElementById('main'), true); }
+function renderBrowse(m, keepFocus) {
+  const list = HG.plants.filter(brMatch).sort((a, b) => a.name.localeCompare(b.name));
+  const fc = (k, v, l) => `<button type="button" class="fchip${BR[k] === v ? ' on' : ''}" aria-pressed="${BR[k] === v}" onclick="brSet('${k}',${typeof v === 'boolean' ? v : `'${v}'`})">${l}</button>`;
+  const active = BR.q || BR.group || BR.light || BR.pets || BR.diff || BR.water;
+  const html = `<div class="view"><h1>Plants</h1><p class="hg-lead">${HG.plants.length} plants, each with sourced care. Filter by what your spot offers.</p>
+  <div class="hg-filters">
+   <label class="hg-f"><span>Search</span><input id="br-q" class="hg-search" type="search" value="${esc(BR.q)}" placeholder="Name, scientific name or family" oninput="BR.q=this.value;renderBrowse(document.getElementById('main'),true)"></label>
+   <div class="hg-f"><span>Group</span><div class="fchips">${Object.keys(HG.GROUPS).map(g => fc('group', g, HG.GROUPS[g].icon + ' ' + HG.GROUPS[g].label)).join('')}</div></div>
+   <div class="hg-f"><span>Light in my spot</span><div class="fchips">${[1, 2, 3].map(l => fc('light', String(l), '☀️ ' + HG.LIGHT[l].label)).join('')}</div></div>
+   <div class="hg-f"><span>Watering</span><div class="fchips">${Object.keys(HG.WATER).map(w => fc('water', w, HG.WATER[w].label)).join('')}</div></div>
+   <div class="hg-f"><span>More</span><div class="fchips">${fc('pets', true, '🐾 Pet-safe only')}${Object.keys(HG.DIFF).map(d => fc('diff', d, HG.DIFF[d])).join('')}</div></div>
+  </div>
+  <div class="hg-count">${list.length} of ${HG.plants.length} plants${active ? ' · <a href="javascript:void(0)" onclick="Object.assign(BR,{q:\'\',group:\'\',light:\'\',pets:false,diff:\'\',water:\'\'});renderBrowse(document.getElementById(\'main\'))">Clear filters</a>' : ''}</div>
+  ${list.length ? `<div class="hg-cards">${list.map(card).join('')}</div>` : '<div class="hg-empty">No plants match these filters. Try removing one.</div>'}
+  <p class="hg-note" style="margin-top:14px">* Not on the ASPCA list; the rating comes from NC State Extension. "Light in my spot" shows plants that grow well at that level.</p></div>`;
+  const pos = keepFocus && document.activeElement && document.activeElement.id === 'br-q' ? document.activeElement.selectionStart : null;
+  m.innerHTML = html; fillPhotos(m);
+  if (pos != null) { const q = document.getElementById('br-q'); q.focus(); q.setSelectionRange(pos, pos); }
+}
+
+// ── Plant page ──
+function scale(labels, okFrom, okTo, best) { return `<div class="hg-scale">${labels.map((l, i) => { const n = i + 1; return `<div class="${n === best ? 'best' : n >= okFrom && n <= okTo ? 'ok' : ''}">${l}</div>`; }).join('')}</div>`; }
+function tempBar(t) {
+  const lo = 40, hi = 95, x = f => Math.max(0, Math.min(100, (f - lo) / (hi - lo) * 100));
+  const band = t.ideal ? `<div class="band" style="left:${x(t.ideal[0])}%;width:${x(t.ideal[1]) - x(t.ideal[0])}%"></div>` : '', mn = t.min != null ? `<div class="min" style="left:${x(t.min)}%" title="Minimum ${t.min}°F"></div>` : '';
+  return `<div class="hg-temp" role="img" aria-label="${t.ideal ? 'Ideal ' + t.ideal[0] + ' to ' + t.ideal[1] + '°F. ' : ''}${t.min != null ? 'Minimum ' + t.min + '°F.' : ''}">${band}${mn}</div><div class="hg-temp-ax"><span>40°F</span><span>60°F</span><span>80°F</span><span>95°F</span></div>`;
+}
+function srcLine(id) { const s = SRC(id); if (!s) return ''; return `<li><a href="${s.url}" target="_blank" rel="noopener">${esc(s.title)}</a>, ${esc(s.publisher)} ${confBadge(s.checked)}${s.note ? `<br><span class="hg-note">${esc(s.note)}</span>` : ''}</li>`; }
+function renderPlant(m, id) {
+  const p = P(id); if (!p) { m.innerHTML = '<div class="view"><h1>Plant not found</h1><p><button class="btn" onclick="nav(\'#/plants\')">Browse plants</button></p></div>'; return; }
+  const L = p.light, W = p.water, H = p.humidity, T = p.temp, ps = petStatus(p);
+  const hBest = H.best ? HG.HUMID[H.best].n : 0, hOk = H.ok ? HG.HUMID[H.ok].n : hBest;
+  const humidTxt = H.best ? HG.HUMID[H.best].label + (H.ok && H.ok !== H.best ? `; tolerates ${HG.HUMID[H.ok].label.toLowerCase()}` : '') : 'Not stated';
+  const petRow = (who, v) => `<li><b>${who}:</b> ${HG.PETS[v]}${v === 'notlisted' && p.pets.treat ? ` (treat as ${p.pets.treat === 'toxic' ? 'toxic' : p.pets.treat === 'nontoxic' ? 'non-toxic' : 'unknown'})` : ''}</li>`;
+  const seasonal = p.season ? Object.keys(p.season).map(k => `<li><b>${MONTHS[k - 1]}:</b> ${esc(p.season[k])}</li>`).join('') : '';
+  m.innerHTML = `<div class="view">
+  <button class="hg-back" onclick="history.length>1?history.back():nav('#/plants')">← Back</button>
+  <div class="hg-plant-top"><div>${photoBox(p)}${p.photo && p.photo.note ? `<p class="hg-note" style="margin:6px 2px 0">${esc(p.photo.note)}</p>` : ''}</div>
+   <div><h1>${esc(p.name)}</h1><p class="hg-sci">${esc(p.sci)}</p><p class="hg-fam">${esc(p.family)}</p>
+   ${p.aka && p.aka.length ? `<p class="hg-aka">Also called: ${p.aka.map(esc).join(', ')}</p>` : ''}
+   <div class="hg-badges">${diffChip(p)}${petChip(p)}<span class="chip chip-n">${HG.GROUPS[p.group].icon} ${HG.GROUPS[p.group].label}</span>${p.conf === 'approx' ? confBadge('approx') : ''}</div>
+   <div class="hg-facts"><div><b>Size</b>${esc(p.size)}</div><div><b>Growth</b>${p.growth ? p.growth[0].toUpperCase() + p.growth.slice(1) : 'Not stated'}</div><div><b>Native to</b>${esc(p.native)}</div></div>
+   <div class="hg-quick"><button class="btn" onclick="window.print()">🖨️ Print care sheet</button></div></div>
+  </div>
+  <section class="hg-sec"><h2>At a glance</h2><div class="hg-bars">
+   <div class="hg-bar"><h4>Light</h4>${scale(['Low', 'Medium', 'High'], L.min, Math.max(L.best, L.min), L.best)}<p>Grows in ${HG.LIGHT[L.min].label.toLowerCase()} light or more; best in ${HG.LIGHT[L.best].label.toLowerCase()}.${L.direct ? ' ' + HG.DIRECT[L.direct] + '.' : ''}</p></div>
+   <div class="hg-bar"><h4>Water</h4>${scale(['Dry', 'Top dries', 'Moist', 'Wet', 'In water'], HG.WATER[W.style].n, HG.WATER[W.style].n, HG.WATER[W.style].n)}<p>${HG.WATER[W.style].label}.</p></div>
+   <div class="hg-bar"><h4>Humidity</h4>${H.best ? scale(['Dry air', 'Average', 'Humid'], Math.min(hOk, hBest), Math.max(hOk, hBest), hBest) : scale(['Dry air', 'Average', 'Humid'], 0, 0, 0)}<p>${humidTxt}.</p></div>
+   <div class="hg-bar"><h4>Temperature</h4>${tempBar(T)}<p>${T.ideal ? `Ideal ${degF(T.ideal[0])} to ${degF(T.ideal[1])}. ` : ''}${T.min != null ? `Keep above ${degF(T.min)}.` : T.ideal ? '' : 'No range stated in the source.'}</p></div>
+  </div></section>
+  <section class="hg-sec hg-care"><h2>Care</h2><dl>
+   <dt>☀️ Light</dt><dd>${esc(L.note)} <span class="hg-note">${HG.LIGHT[L.best].label}: ${HG.LIGHT[L.best].fc}.</span></dd>
+   <dt>💧 Water</dt><dd>${esc(W.note)}</dd>
+   <dt>💨 Humidity</dt><dd>${esc(H.note)}</dd>
+   <dt>🌡️ Temperature</dt><dd>${esc(T.note)}</dd>
+   <dt>🪨 Potting mix</dt><dd><b>${HG.SOILS[p.soil].label}.</b> ${HG.SOILS[p.soil].recipe} ${HG.SOILS[p.soil].conf ? confBadge('approx') : ''}</dd>
+   <dt>🧪 Feeding</dt><dd>${esc(p.feed)}</dd>
+  </dl></section>
+  <section class="hg-sec hg-safety ${ps === 'nontoxic' ? 'safe' : ps === 'unknown' ? 'unk' : ''}"><h2>${ps === 'toxic' ? '⚠️ Toxic to pets' : ps === 'nontoxic' ? '🐾 Pet-safe' : '❔ Pet safety unknown'}</h2>
+   <ul class="hg-list">${petRow('Cats', p.pets.cats)}${petRow('Dogs', p.pets.dogs)}</ul>
+   ${p.pets.principle ? `<p><b>Toxic principle:</b> ${esc(p.pets.principle)}</p>` : ''}${p.pets.signs ? `<p><b>Signs if eaten:</b> ${esc(p.pets.signs)}</p>` : ''}
+   ${p.people && (p.people.level || p.people.note) ? `<p><b>People:</b> ${p.people.level ? esc(p.people.level[0].toUpperCase() + p.people.level.slice(1)) + ' severity. ' : ''}${esc(p.people.note)}</p>` : ''}
+   <p class="hg-note">${esc(p.pets.basis)} If a pet eats a plant, call your veterinarian or the ASPCA Animal Poison Control Center, (888) 426-4435.</p></section>
+  <div class="hg-grid2">
+   <section class="hg-sec"><h2>Propagation</h2>${p.propagation.length ? `<div class="fchips" style="margin-bottom:8px">${p.propagation.map(x => `<span class="chip chip-n">${HG.PROP[x]}</span>`).join('')}</div>` : ''}<p>${esc(p.propNote)}</p></section>
+   <section class="hg-sec"><h2>Pests and problems</h2>${p.pests.length ? `<div class="fchips" style="margin-bottom:8px">${p.pests.map(x => `<span class="chip chip-n">🐛 ${HG.PESTS[x]}</span>`).join('')}</div>` : ''}<ul class="hg-list">${p.problems.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
+  </div>
+  <section class="hg-sec"><h2>Tips</h2><ul class="hg-list">${p.tips.map(x => `<li>${esc(x)}</li>`).join('')}</ul>${seasonal ? `<h3 style="margin-top:14px">Through the year</h3><ul class="hg-list">${seasonal}</ul>` : ''}</section>
+  <section class="hg-sec"><h2>More detail</h2><p>${esc(p.deeper)}</p>${p.deeperBasis === 'source' ? '' : `<p class="hg-note">${confBadge('approx')} Grower knowledge, not all from the sources below.</p>`}</section>
+  ${p.links && p.links.length ? `<section class="hg-sec hg-xlinks"><h2>Related guides</h2>${p.links.map(k => `<a href="${HG.APPS[k].url}" target="_blank" rel="noopener"><b>${HG.APPS[k].name}</b><br><span class="hg-note">${HG.APPS[k].why}</span></a>`).join('')}</section>` : ''}
+  <section class="hg-sec"><h2>Sources</h2><ol class="hg-src">${p.sources.map(srcLine).join('')}${['umn-light', 'mu-light'].filter(x => !p.sources.includes(x)).slice(0, 1).map(srcLine).join('')}</ol>
+  <p class="hg-note">Light levels follow University of Minnesota and University of Missouri Extension. Seasons are for the Northern Hemisphere.</p></section>
+  </div>`;
+  fillPhotos(m); document.title = p.name + ' · Houseplant Guide';
+}
+
+// ── Plant finder ──
+const FINDER_Q = [
+  ['light', 'How much light does the spot get?', [['1', 'Low: north window or well back from a window'], ['2', 'Medium: east window, or near a west window out of the sun'], ['3', 'High: a bright south or west window'], ['sun', 'Direct sun for several hours']]],
+  ['pets', 'Do cats or dogs share the space?', [['yes', 'Yes'], ['no', 'No']]],
+  ['water', 'How do you water?', [['forget', 'I forget for a week or two'], ['normal', 'About weekly'], ['often', 'Often: I like to check daily']]],
+  ['air', 'How humid is the room?', [['dry', 'Dry (heated or air-conditioned)'], ['avg', 'Average'], ['humid', 'Humid: bathroom, kitchen or terrarium']]],
+  ['exp', 'Your experience', [['new', 'New to houseplants'], ['some', 'Kept a few alive'], ['lots', 'Experienced']]]
+];
+function fdPick(k, v) { FD[k] = FD[k] === v ? '' : v; renderFinder(document.getElementById('main')); }
+function fdScore(p) {
+  let s = 100; const why = [], no = [];
+  const lv = FD.light === 'sun' ? 3 : +FD.light;
+  if (lv) {
+    if (lv < p.light.min) { s -= 70; no.push('Needs more light than this spot gets'); }
+    else if (FD.light === 'sun' && p.light.direct === 'avoid') { s -= 45; no.push('Direct sun can scorch it'); }
+    else if (lv === p.light.best || (FD.light === 'sun' && p.light.direct === 'needs')) { why.push(FD.light === 'sun' && p.light.direct === 'needs' ? 'Wants the direct sun this spot gets' : 'This is its best light level'); }
+    else if (lv > p.light.best) { s -= 8; why.push('Tolerates this much light'); } else { s -= 12; why.push('Tolerates this light, though it prefers more'); }
+  }
+  if (FD.pets === 'yes') { const ps = petStatus(p); if (ps === 'toxic') { s -= 80; no.push('Toxic to cats or dogs'); } else if (ps === 'unknown') { s -= 30; no.push('Pet safety unknown'); } else why.push(p.pets.cats === 'notlisted' ? 'Rated non-toxic (NC State Extension)' : 'On the ASPCA non-toxic list'); }
+  const ws = p.water.style;
+  if (FD.water === 'forget') { if (ws === 'dry') why.push('Forgiving if you forget to water'); else if (ws === 'partial') s -= 8; else if (ws === 'moist') { s -= 30; no.push('Needs steady moisture'); } else { s -= 60; no.push('Must never dry out'); } }
+  if (FD.water === 'often') { if (ws === 'dry') { s -= 25; no.push('Frequent watering rots it'); } else if (ws === 'moist' || ws === 'wet') why.push('Likes frequent attention to water'); }
+  const hb = p.humidity.best, ho = p.humidity.ok || hb;
+  if (FD.air === 'dry') { if (hb === 'high' && ho === 'high') { s -= 45; no.push('Needs humid air'); } else if (hb === 'high') { s -= 12; why.push('Prefers humid air but tolerates less'); } else if (hb === 'low' || ho === 'low') why.push('Copes with dry air'); }
+  if (FD.air === 'humid' && hb === 'high') why.push('Loves humid air');
+  if (FD.exp === 'new') { if (p.difficulty === 'challenging') { s -= 40; no.push('Challenging for a first plant'); } else if (p.difficulty === 'moderate') s -= 12; else why.push('Easy to grow'); }
+  if (FD.exp === 'some' && p.difficulty === 'challenging') s -= 12;
+  if (p.water.style === 'aquatic') { s -= 10; }
+  return { s: Math.max(0, Math.min(100, s)), why, no };
+}
+function renderFinder(m) {
+  const answered = FINDER_Q.filter(q => FD[q[0]]).length;
+  const res = HG.plants.map(p => Object.assign({ p }, fdScore(p))).sort((a, b) => b.s - a.s || a.p.name.localeCompare(b.p.name));
+  const good = res.filter(r => r.s >= 60), poor = res.filter(r => r.s < 60);
+  const row = r => `<button type="button" class="hg-res" onclick="nav('#/plant/${r.p.id}')">${photoBox(r.p, '', true)}<div><b>${esc(r.p.name)}</b> <i class="hg-note">${esc(r.p.sci)}</i><div class="fchips" style="margin-top:4px">${diffChip(r.p)}${petChip(r.p)}</div><ul>${r.why.map(w => `<li>${esc(w)}</li>`).join('')}${r.no.map(w => `<li class="why-no">${esc(w)}</li>`).join('')}</ul></div><span class="hg-score">${r.s}%</span></button>`;
+  m.innerHTML = `<div class="view"><h1>Plant finder</h1><p class="hg-lead">Answer what you can about the spot and your routine. Plants are ranked by how well they fit; tap one for its full care.</p>
+  <div class="hg-grid2"><section class="hg-sec">${FINDER_Q.map(q => `<div class="hg-q"><b>${q[1]}</b><div class="fchips">${q[2].map(o => `<button type="button" class="fchip${FD[q[0]] === o[0] ? ' on' : ''}" aria-pressed="${FD[q[0]] === o[0]}" onclick="fdPick('${q[0]}','${o[0]}')">${esc(o[1])}</button>`).join('')}</div></div>`).join('')}
+  <p class="hg-note">Not sure about your light? <a href="#/learn/light">Measure it with a phone light meter</a>.</p>${answered ? '<button class="btn" onclick="Object.keys(FD).forEach(k=>FD[k]=\'\');renderFinder(document.getElementById(\'main\'))">Start over</button>' : ''}</section>
+  <section>${answered ? `<h2>${good.length} good match${good.length === 1 ? '' : 'es'}</h2>${good.slice(0, 12).map(row).join('') || '<div class="hg-empty">No plant fits every answer. Try relaxing one, or add a grow light.</div>'}
+   ${poor.length ? `<details class="hg-sec" style="margin-top:12px"><summary><b>${poor.length} not suited</b>, and why</summary>${poor.map(row).join('')}</details>` : ''}` : '<div class="hg-empty">Pick an answer to see matching plants.</div>'}</section></div></div>`;
+  fillPhotos(m);
+}
+
+// ── Learn ──
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const LEARN_TABS = [['light', '☀️ Light'], ['water', '💧 Watering'], ['humidity', '💨 Humidity'], ['soil', '🪨 Potting mixes'], ['pets', '🐾 Pet safety'], ['seasons', '🗓️ Seasons'], ['glossary', '📖 Glossary']];
+const GLOSSARY = [
+  ['Aerial root', 'A root that grows from a stem above the soil, used for climbing or taking in moisture. Pothos, monstera and philodendrons make them.'],
+  ['Aroid', 'A plant in the arum family (Araceae): pothos, philodendrons, monstera, anthuriums, peace lilies, ZZ plants and Chinese evergreens.'],
+  ['Calcium oxalate', 'Needle-like crystals in the sap of many aroids. Chewing releases them and causes burning and swelling of the mouth.'],
+  ['Division', 'Splitting one plant into several, each with roots and shoots.'],
+  ['Dormancy', 'A seasonal rest when a plant grows slowly or not at all and needs less water and no feeding.'],
+  ['Epiphyte', 'A plant that grows on another plant (usually a tree) for support, not as a parasite. Orchids, many hoyas and Christmas cactus.'],
+  ['Etiolation', 'Pale, stretched growth caused by too little light.'],
+  ['Foot-candle', 'A unit of light on a surface; 1 foot-candle is about 10.8 lux. Extension services use it to define low, medium and high light.'],
+  ['Leggy', 'Long bare stems with few leaves, usually from too little light.'],
+  ['Node', 'The point on a stem where a leaf joins. Roots and new shoots grow from nodes, so a cutting needs at least one.'],
+  ['Offset', 'A small plant that forms at the base of its parent (a pup), as on aloe and echeveria.'],
+  ['Peduncle', 'A flower stalk. On hoyas it is a short spur that blooms again for years, so it should not be cut off.'],
+  ['Pot-bound', 'A plant whose roots fill the pot. Some plants, like hoyas and peace lilies, do well slightly pot-bound.'],
+  ['Saponins', 'Soapy plant compounds that cause vomiting and diarrhea if eaten; found in snake plants, dracaenas and aloe.'],
+  ['Spathe', 'The hood-like leaf around an aroid flower spike, such as the white "petal" of a peace lily.'],
+  ['Stolon', 'A runner: a horizontal stem that forms new plants, as on spider plants.'],
+  ['Variegation', 'Leaves with patches of white, cream, yellow or pink. Variegated plants usually need more light than plain green ones.']
+];
+function renderLearn(m, tab) {
+  tab = LEARN_TABS.some(t => t[0] === tab) ? tab : 'light';
+  const tabs = `<div class="hg-ltabs fchips">${LEARN_TABS.map(t => `<button type="button" class="fchip${t[0] === tab ? ' on' : ''}" onclick="nav('#/learn/${t[0]}')">${t[1]}</button>`).join('')}</div>`;
+  const byWater = w => HG.plants.filter(p => p.water.style === w).map(p => `<a href="#/plant/${p.id}">${esc(p.name)}</a>`).join(', ');
+  const body = {
+    light: `<section class="hg-sec"><h2>How much light is "low", "medium" and "high"?</h2><p>The human eye is a poor judge of light, so extension services measure it in foot-candles. A free phone light-meter app gives a usable reading in lux: hold the phone where the leaves are, facing the window.</p>
+      <div class="hg-tbl"><table><thead><tr><th>Level</th><th>Foot-candles</th><th>Lux</th><th>Where you find it</th></tr></thead><tbody>${[1, 2, 3].map(l => `<tr><th>${HG.LIGHT[l].label}</th><td>${HG.LIGHT[l].fc}</td><td>${HG.LIGHT[l].lux}</td><td>${HG.LIGHT[l].where}</td></tr>`).join('')}</tbody></table></div>
+      <p class="hg-note">Foot-candle ranges and window guidance: University of Minnesota and University of Missouri Extension. Lux figures are converted (1 foot-candle = 10.76 lux).</p></section>
+      <section class="hg-sec"><h2>Grow lights</h2><ul class="hg-list"><li>With no window light, run lights 16 to 18 hours a day; with some daylight, 12 to 14 hours may be enough (University of Missouri).</li><li>Keep foliage plants 12 to 24 in below the light and flowering plants 6 to 12 in (University of Minnesota).</li><li>Light drops quickly with distance, so a plant a few feet farther away gets much less.</li></ul></section>`,
+    water: `<section class="hg-sec"><h2>The five watering styles</h2><p>Every plant page uses one of these. Overwatering kills more houseplants than anything else: roots need air as well as water.</p>${Object.keys(HG.WATER).map(w => `<h3>${HG.WATER[w].label}</h3><p>${HG.WATER[w].how}</p><p class="hg-note">${byWater(w) || 'None yet.'}</p>`).join('')}</section>
+      <section class="hg-sec"><h2>Good habits</h2><ul class="hg-list"><li>Use pots with drainage holes and empty the saucer after watering.</li><li>Most plants need less water in winter, when growth slows.</li><li>Use room-temperature water: some plants, such as hoyas and Chinese evergreens, react badly to cold water.</li><li>Spider plants, dracaenas and calatheas brown at the tips from fluoride and chlorine in tap water; rain or distilled water helps.</li></ul><p class="hg-note">These points restate guidance on the individual plant pages.</p></section>`,
+    humidity: `<section class="hg-sec"><h2>Humidity</h2><p>Heated winter air is often very dry. Plants marked "Humid" want 60% or more; most others do fine in average rooms.</p><ul class="hg-list"><li><b>Raise it:</b> a humidifier works best; a tray of wet pebbles under the pot helps a little; grouping plants helps; kitchens and bathrooms are naturally humid.</li><li><b>Signs of dry air:</b> brown, crispy leaf edges and tips, and more spider mites.</li><li><b>Terrariums:</b> a closed jar holds humidity for plants like nerve plant.</li></ul><p class="hg-note">${confBadge('approx')} Summary of advice on the plant pages; a cheap hygrometer tells you what you actually have.</p></section>`,
+    soil: `<section class="hg-sec"><h2>Potting mixes</h2><p>Each plant page names one of these mixes. Ingredient ratios vary between growers, so treat them as starting points.</p>${Object.keys(HG.SOILS).filter(k => k !== 'none').map(k => `<h3>${HG.SOILS[k].label} ${HG.SOILS[k].conf ? confBadge('approx') : ''}</h3><p>${HG.SOILS[k].recipe}</p><p class="hg-note">${HG.plants.filter(p => p.soil === k).map(p => `<a href="#/plant/${p.id}">${esc(p.name)}</a>`).join(', ')}</p>`).join('')}<p class="hg-note">The orchid and carnivorous plant mixes follow NC State Extension and the International Carnivorous Plant Society; the others are common grower practice.</p></section>`,
+    pets: `<section class="hg-sec"><h2>Pet safety</h2><p>Ratings come from the ASPCA Animal Poison Control lists for cats and dogs. When a plant is not on those lists, the guide says so and gives NC State Extension’s rating instead, marked with an asterisk.</p>
+      <div class="hg-tbl"><table><thead><tr><th>Plant</th><th>Cats</th><th>Dogs</th><th>Note</th></tr></thead><tbody>${HG.plants.slice().sort((a, b) => a.name.localeCompare(b.name)).map(p => `<tr><td><a href="#/plant/${p.id}">${esc(p.name)}</a></td><td>${HG.PETS[p.pets.cats]}</td><td>${HG.PETS[p.pets.dogs]}</td><td>${petChip(p)}</td></tr>`).join('')}</tbody></table></div>
+      <p>Non-toxic does not mean edible: any plant can upset a pet’s stomach. If a pet eats a plant, call your veterinarian or the ASPCA Animal Poison Control Center at (888) 426-4435.</p></section>`,
+    seasons: `<section class="hg-sec"><h2>Through the year (Northern Hemisphere)</h2><p>${confBadge('approx')} General guidance; plant-specific dates come from the plant pages.</p>${[
+        ['December to February', 'Growth slows. Water less, stop feeding, keep plants away from cold windows and heating vents, and watch for spider mites in dry air.'],
+        ['March to May', 'Growth restarts. Repot plants that have outgrown their pots (peace lily in February or March), prune hoyas in early spring, and resume feeding.'],
+        ['June to August', 'Peak growth. Many plants can summer outdoors in shade; bird of paradise likes a sunny to part-shade spot once it is above 70°F.'],
+        ['September to November', 'Bring plants in before nights fall below 50 to 55°F, checking for pests first. Give Christmas cactus long nights from mid-September to mid-November, and large moth orchids a week of 55°F nights in autumn to start a flower spike.']
+      ].map(x => `<div class="hg-month"><b>${x[0]}</b><span>${x[1]}</span></div>`).join('')}</section>`,
+    glossary: `<section class="hg-sec"><h2>Glossary</h2><dl class="hg-gloss">${GLOSSARY.map(g => `<dt>${g[0]}</dt><dd>${g[1]}</dd>`).join('')}</dl></section>`
+  }[tab];
+  m.innerHTML = `<div class="view"><h1>Learn</h1><p class="hg-lead">The basics behind every care sheet.</p>${tabs}${body}</div>`;
+}
+
+// ── Tools hub ──
+const TOOLS = [
+  ['finder', '🔎', 'Plant finder', 'Plants ranked for your light, pets, watering habits, humidity and experience.', '#/finder'],
+  ['checkup', '🩺', 'Plant Checkup', 'Score a plant’s spot and routine, with early warnings and a saved history.', ''],
+  ['wrong', '🍂', 'What’s wrong with my plant?', 'A step-by-step symptom checker for yellow leaves, brown tips, drooping and leaf drop.', ''],
+  ['pests', '🐛', 'Pest ID', 'Confirm and treat fungus gnats, spider mites, mealybugs, scale, thrips and aphids.', ''],
+  ['mine', '📒', 'My plants', 'Your collection, watering log, cutting tracker and printable care cards.', '']
+];
+function renderTools(m) {
+  m.innerHTML = `<div class="view"><h1>Tools</h1><p class="hg-lead">Interactive helpers built on the plant data. More are on the way.</p><div class="hg-tools">${TOOLS.map(t => t[4] ? `<button type="button" class="hg-tool" onclick="nav('${t[4]}')"><span class="i">${t[1]}</span><b>${t[2]}</b><small>${t[3]}</small></button>` : `<button type="button" class="hg-tool" disabled><span class="i">${t[1]}</span><b>${t[2]}</b><small>${t[3]}</small><span class="chip chip-warn" style="align-self:flex-start;margin-top:6px">Coming soon</span></button>`).join('')}</div></div>`;
+}
+
+// ── Sources ──
+function renderSources(m) {
+  const types = { extension: 'University extension', toxicity: 'Pet toxicity (ASPCA)', society: 'Specialist societies', government: 'Government', research: 'Research', hobby: 'Hobby sites' };
+  m.innerHTML = `<div class="view"><h1>Sources</h1><p class="hg-lead">Where every care fact comes from. <b>Verified</b> means the page was read and matches the guide on the date of the last update.</p>
+  ${Object.keys(types).map(t => { const l = HG.sources.filter(s => s.type === t); return l.length ? `<section class="hg-sec"><h2>${types[t]}</h2><ul class="hg-list hg-src">${l.map(s => { const used = HG.plants.filter(p => p.sources.includes(s.id)); return `<li><a href="${s.url}" target="_blank" rel="noopener">${esc(s.title)}</a>, ${esc(s.publisher)} ${confBadge(s.checked)}${s.note ? `<br><span class="hg-note">${esc(s.note)}</span>` : ''}${used.length && used.length < 10 ? `<br><span class="hg-note">Used for: ${used.map(p => `<a href="#/plant/${p.id}">${esc(p.name)}</a>`).join(', ')}</span>` : ''}</li>`; }).join('')}</ul></section>` : ''; }).join('')}
+  <section class="hg-sec"><h2>How the guide handles uncertainty</h2><ul class="hg-list"><li>Care panels use only what the cited source states; "Not stated in the source" is used rather than a guess.</li><li>"More detail" notes and potting-mix recipes that come from common grower practice are marked <b>Approximate</b>.</li><li>Where sources disagree (for example, Venus flytrap dormancy), both views are given.</li></ul></section></div>`;
+}
+
+// ── Help ──
+const FAQ = [
+  ['Does this guide work offline?', 'Yes. Once loaded, everything except the photos and the outside links works without a connection, and photos you have seen are remembered for 30 days.'],
+  ['Why does a plant show "Not stated in the source"?', 'The guide fills care fields only with what a cited source says. Blank spots will fill in as more sources are checked.'],
+  ['What does the asterisk on a pet-safety badge mean?', 'The plant is not on the ASPCA lists, so the rating comes from NC State Extension instead.'],
+  ['Where do the photos come from?', 'Wikimedia Commons (through Wikipedia) first, then iNaturalist, using only freely licensed photos, each credited on the image. A photo is shown only when its page matches the plant’s scientific name.'],
+  ['Are the seasons right for me?', 'Months are for the Northern Hemisphere. South of the equator, shift them by six months.'],
+  ['Can I print a care sheet?', 'Yes: open a plant and use "Print care sheet". The menus are hidden in print.']
+];
+function renderHelp(m) {
+  m.innerHTML = `<div class="view"><h1>Help and FAQ</h1><div class="hg-grid2">
+  <section class="hg-sec"><h2>Using the guide</h2><ul class="hg-list"><li><b>Plants:</b> search and filter by group, light, watering, pet safety and difficulty.</li><li><b>Plant pages:</b> range bars at the top, then care, pet safety, propagation, problems, tips, collector detail and sources.</li><li><b>Plant finder:</b> answer a few questions about a spot to see ranked matches with reasons.</li><li><b>Learn:</b> light levels, watering styles, humidity, potting mixes, pet safety, seasons and a glossary.</li><li><b>Theme:</b> the ${'🖥️'} button switches between automatic, dark and light.</li></ul></section>
+  <section class="hg-sec"><h2>Questions</h2>${FAQ.map(q => `<details class="hg-faq"><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join('')}</section></div>
+  <section class="hg-sec"><h2>Photo check</h2><p>Looks up a photo for every plant again and shows where each one came from, or why none was found.</p><button class="btn" onclick="photoCheck()">🔍 Check photos</button><div id="photo-check" style="margin-top:12px"></div></section>
+  <section class="hg-sec hg-xlinks"><h2>Other guides</h2>${Object.keys(HG.APPS).map(k => `<a href="${HG.APPS[k].url}" target="_blank" rel="noopener"><b>${HG.APPS[k].name}</b><br><span class="hg-note">${HG.APPS[k].why}</span></a>`).join('')}<a href="https://beneathtrees.org/" target="_blank" rel="noopener"><b>All beneathtrees.org guides</b></a></section></div>`;
+}
+
+// ── Router ──
+function parseHash() {
+  const h = (location.hash || '#/').replace(/^#\/?/, ''), parts = h.split('/');
+  const v = parts[0] || 'home';
+  if (v === 'plant') return { view: 'plant', id: parts[1] };
+  if (v === 'learn') return { view: 'learn', tab: parts[1] || 'light' };
+  return { view: ['home', 'plants', 'finder', 'tools', 'sources', 'help'].includes(v) ? v : 'home' };
+}
+function route() {
+  const r = parseHash(); Object.assign(S, { view: r.view, id: r.id || null, tab: r.tab || null });
+  const m = document.getElementById('main'); document.title = 'Houseplant Guide';
+  ({ home: renderHome, plants: renderBrowse, plant: x => renderPlant(x, S.id), finder: renderFinder, learn: x => renderLearn(x, S.tab), tools: renderTools, sources: renderSources, help: renderHelp })[S.view](m);
+  fillPhotos(m);
+  const tabOf = { plant: 'plants', sources: 'more', help: 'more', tools: 'tools' }[S.view] || S.view;
+  document.querySelectorAll('.hg-tab').forEach(b => b.classList.toggle('on', b.dataset.v === tabOf || (S.view === 'plant' && b.dataset.v === 'plants')));
+  document.querySelectorAll('#hg-bottom button').forEach(b => b.classList.toggle('on', b.dataset.v === (tabOf === 'tools' ? 'more' : tabOf)));
+  if (!S.keepScroll) window.scrollTo(0, 0);
+  S.rendered = true;
+}
+function hgMore(open) { document.getElementById('hg-more').classList.toggle('open', open); }
+function hgInit() {
+  document.getElementById('hg-more').addEventListener('click', e => { if (e.target.id === 'hg-more') hgMore(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') hgMore(false); });
+  window.addEventListener('hashchange', route);
+  if (window.matchMedia) { const mq = window.matchMedia('(prefers-color-scheme: dark)'); const f = () => hgThemeApply(); if (mq.addEventListener) mq.addEventListener('change', f); else if (mq.addListener) mq.addListener(f); }
+  hgThemePaint(); route();
+}
+document.addEventListener('DOMContentLoaded', hgInit);
+</script>
+
+</body>
+</html>
